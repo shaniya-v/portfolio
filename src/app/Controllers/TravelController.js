@@ -170,6 +170,13 @@ function(Moon, ColorManager) {
       targetObject.core.updateMatrixWorld();
       targetObject.orbitCentroid.updateMatrixWorld();
 
+      //redirect 
+      if (targetObject.name === 'Skills') {
+        setTimeout(() => {
+          window.location.href = 'https://spaceportfolio.netlify.app/;
+        }, 1000);
+      }
+
       this.dispatchTravelCompleteEvent(targetObject);
     }
 
