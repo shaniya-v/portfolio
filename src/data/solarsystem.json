@@ -38,14 +38,14 @@
         },
         "_3d": {
             "textures": {
-                "base": "/src/assets/textures/sun_detailed.png"
+                "base": "src/assets/textures/sun_detailed.png"
             }
         }
     },
     "planets": [
         {
             "id": 1,
-            "name": "Mercury",
+            "name": "Skills",
             "diameter": 4879,
             "mass": 0.330,
             "gravity": 3.7,
@@ -75,7 +75,7 @@
         },
         {
             "id": 2,
-            "name": "Venus",
+            "name": "Tools",
             "diameter": 12104,
             "mass": 4.87,
             "gravity": 8.9,
@@ -105,7 +105,7 @@
         },
         {
             "id": 3,
-            "name": "Earth",
+            "name": "Project",
             "diameter": 12756,
             "mass": 5.97,
             "gravity": 9.8,
@@ -165,7 +165,7 @@
         },
         {
             "id": 4,
-            "name": "Mars",
+            "name": "Experience",
             "diameter": 6792,
             "mass": 0.642,
             "gravity": 3.7,
@@ -238,7 +238,7 @@
         },
         {
             "id": 5,
-            "name": "Jupiter",
+            "name": "Acheivements",
             "diameter": 142984,
             "mass": 1898,
             "gravity": 23.1,
@@ -905,7 +905,7 @@
         },
         {
             "id": 6,
-            "name": "Saturn",
+            "name": "Growth",
             "diameter": 120536,
             "mass": 568,
             "density": 687,
@@ -1509,7 +1509,7 @@
         },
         {
             "id": 7,
-            "name": "Uranus",
+            "name": "Education",
             "mass": 86.8,
             "diameter": 51118,
             "density": 1271,
@@ -2064,7 +2064,7 @@
         },
         {
             "id": 8,
-            "name": "Neptune",
+            "name": "Connect",
             "mass": 102,
             "diameter": 49528,
             "density": 1638,
