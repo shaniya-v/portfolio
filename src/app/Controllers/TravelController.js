@@ -171,7 +171,7 @@ function(Moon, ColorManager) {
       targetObject.orbitCentroid.updateMatrixWorld();
 
       //redirect 
-      if (targetObject.name === 'Skills') {
+      if (targetObject.name === 'Earth') {
         setTimeout(() => {
           window.location.href = 'https://spaceportfolio.netlify.app/;
         }, 1000);
