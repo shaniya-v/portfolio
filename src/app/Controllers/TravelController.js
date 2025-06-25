@@ -173,7 +173,7 @@ function(Moon, ColorManager) {
       //redirect 
       if (targetObject.name === 'Skills') {
         setTimeout(() => {
-          window.location.href = 'https://spaceportfolio.netlify.app/';
+          window.location.href = 'skills.html';
         }, 1000);
       }
 
