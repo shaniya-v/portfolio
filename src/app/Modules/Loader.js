@@ -1,5 +1,4 @@
-define(
-[
+define([
   'vendor/httprequest/httprequest',
   'Modules/ThirdPartyScripts',
   'Modules/Detector',
@@ -36,8 +35,7 @@ function(
 
   function notifyGa(category, action, label) {
     ga('send', 'event', category, action, label);
-
-    console.log('Event:', category, '-', action, '-',label);
+    console.log('Event:', category, '-', action, '-', label);
   }
 
   if (!Detector.webgl) {
@@ -56,36 +54,35 @@ function(
     true
   );
 
-  dataRequest.send().then((data)=> {
+  dataRequest.send().then((data) => {
     solarSystemData = data;
 
-    var updateUserInterfaceEvent = new CustomEvent('solarsystem.update.ui', { detail: data });
-    var solarSystemFactory = new SolarSystemFactory(solarSystemData);
-    var introScreen = $('.intro-screen');
-    var renderButton = $('#render-scene');
-    var solarsystem = $('#solar-system');
-    var progressPrompt = $('#loading-prompt');
-    var progressBar = $('#progress-bar');
+    const updateUserInterfaceEvent = new CustomEvent('solarsystem.update.ui', { detail: data });
+    const solarSystemFactory = new SolarSystemFactory(solarSystemData);
+    const introScreen = $('.intro-screen');
+    const renderButton = $('#render-scene');
+    const solarsystem = $('#solar-system');
+    const progressPrompt = $('#loading-prompt');
+    const progressBar = $('#progress-bar');
 
-    solarsystem.fadeOut();
+    solarsystem.hide();
 
-    // Check if direct=true is in the URL
     const urlParams = new URLSearchParams(window.location.search);
     const directStart = urlParams.get('direct');
-    
+
     if (directStart === 'true') {
       $('.inner').hide();
       progressPrompt.addClass('active');
-    
+
       solarSystemFactory.build(solarSystemData).then(() => {
         introScreen.hide();
         solarsystem.fadeIn(2000, () => {
           let seenModal = false;
-    
+
           if (window.localStorage) {
             seenModal = localStorage.getItem('seenModal');
           }
-    
+
           if (!seenModal) {
             $('#tutorial').foundation('open');
             $('#tutorial-got-it').on('click', () => {
@@ -96,20 +93,19 @@ function(
           }
         });
       });
-    
-      return; // Stop further execution — skip the renderButton part
+
+      return;
     }
 
-
-    renderButton.one('click', ()=> {
-      $('.inner').slideUp(500, ()=> {
+    renderButton.one('click', () => {
+      $('.inner').slideUp(500, () => {
         progressPrompt.addClass('active');
 
-        solarSystemFactory.build(solarSystemData).then(()=> {
-          introScreen.fadeOut(2000, ()=> {
+        solarSystemFactory.build(solarSystemData).then(() => {
+          introScreen.fadeOut(2000, () => {
             introScreen.remove();
-            solarsystem.fadeIn(2000, ()=> {
-              var seenModal = false;
+            solarsystem.fadeIn(2000, () => {
+              let seenModal = false;
 
               if (window.localStorage) {
                 seenModal = localStorage.getItem('seenModal');
@@ -117,8 +113,7 @@ function(
 
               if (!seenModal) {
                 $('#tutorial').foundation('open');
-
-                $('#tutorial-got-it').on('click', ()=> {
+                $('#tutorial-got-it').on('click', () => {
                   if (window.localStorage) {
                     localStorage.setItem('seenModal', 'true');
                   }
