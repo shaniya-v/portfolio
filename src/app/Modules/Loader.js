@@ -17,7 +17,6 @@ function(
   'use strict';
 
   var seenJsFeaturesModal = false;
-
   if (window.localStorage) {
     seenJsFeaturesModal = localStorage.getItem('seenJsFeaturesModal');
   }
@@ -25,8 +24,7 @@ function(
   if (!seenJsFeaturesModal) {
     var browserAlert = new Foundation.Reveal($('#browser-compatibility-modal'));
     browserAlert.open();
-
-    $('#browser-compatibility-got-it').on('click', ()=> {
+    $('#browser-compatibility-got-it').on('click', () => {
       if (window.localStorage) {
         localStorage.setItem('seenJsFeaturesModal', 'true');
       }
@@ -43,16 +41,11 @@ function(
     notifyGa('Compatibility Check', 'Fail', window.navigator.userAgent);
     return;
   }
-
   notifyGa('Compatibility Check', 'Pass', window.navigator.userAgent);
 
   var solarSystemData = null;
   var templateLoader = new TemplateLoader();
-  var dataRequest = new HttpRequest(
-    'GET',
-    'src/data/solarsystem.json',
-    true
-  );
+  var dataRequest = new HttpRequest('GET', 'src/data/solarsystem.json', true);
 
   dataRequest.send().then((data) => {
     solarSystemData = data;
@@ -71,46 +64,42 @@ function(
     const directStart = urlParams.get('direct');
 
     if (directStart === 'true') {
-      $('.inner').hide();
-      progressPrompt.addClass('active');
-
-      solarSystemFactory.build(solarSystemData).then(() => {
-        introScreen.hide();
-        solarsystem.fadeIn(2000, () => {
-          let seenModal = false;
-
-          if (window.localStorage) {
-            seenModal = localStorage.getItem('seenModal');
-          }
-
-          if (!seenModal) {
-            $('#tutorial').foundation('open');
-            $('#tutorial-got-it').on('click', () => {
+      $('.inner').slideUp(500, () => {
+        progressPrompt.addClass('active');
+        solarSystemFactory.build(solarSystemData).then(() => {
+          introScreen.fadeOut(2000, () => {
+            introScreen.remove();
+            solarsystem.fadeIn(2000, () => {
+              let seenModal = false;
               if (window.localStorage) {
-                localStorage.setItem('seenModal', 'true');
+                seenModal = localStorage.getItem('seenModal');
+              }
+              if (!seenModal) {
+                $('#tutorial').foundation('open');
+                $('#tutorial-got-it').on('click', () => {
+                  if (window.localStorage) {
+                    localStorage.setItem('seenModal', 'true');
+                  }
+                });
               }
             });
-          }
+          });
         });
       });
-
       return;
     }
 
     renderButton.one('click', () => {
       $('.inner').slideUp(500, () => {
         progressPrompt.addClass('active');
-
         solarSystemFactory.build(solarSystemData).then(() => {
           introScreen.fadeOut(2000, () => {
             introScreen.remove();
             solarsystem.fadeIn(2000, () => {
               let seenModal = false;
-
               if (window.localStorage) {
                 seenModal = localStorage.getItem('seenModal');
               }
-
               if (!seenModal) {
                 $('#tutorial').foundation('open');
                 $('#tutorial-got-it').on('click', () => {
