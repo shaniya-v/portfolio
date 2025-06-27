@@ -173,7 +173,7 @@ function(Moon, ColorManager) {
       //redirect 
       if (targetObject.name === 'Skills') {
         setTimeout(() => {
-          window.location.href = 'skills.html';
+          window.location.href = 'spotlight/skills.html';
         }, 1000);
       }
 
