@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shaniya Skills</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
 
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 100px auto;
+      padding: 0 20px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 100px;
+      gap: 40px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.6s ease;
+    }
+
+    .skill-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .sphere {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 25px 10px rgba(233, 223, 223, 0.890);
+      border: 3px solid white;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .sphere:hover {
+      transform: scale(1.1);
+    }
+
+    .panel {
+      flex: 1;
+      padding: 7px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.862);
+      transition: transform 0.3s ease;
+    }
+
+    .panel:hover {
+      transform: scale(1.05);
+    }
+
+    .panel h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .skill-section {
+        flex-direction: column !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+
+  <div class="container">
+    <div class="title" id="title">Skills</div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/database.png');"></div>
+      <div class="panel">
+        <h3>Database Management:</h3>
+        <p>Hands-on experience with MySQL, including application integration and database normalization.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/speak.png');"></div>
+      <div class="panel">
+        <h3>Public Speaking & Communication:</h3>
+        <p>Active Toastmasters member and winner of multiple speech contests, with strong communication skills nurtured through consistent participation.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/coding.png');"></div>
+      <div class="panel">
+        <h3>Programming:</h3>
+        <p>Strong foundation in Python, with experience solving coding challenges on HackerRank and working on data cleansing and visualization projects using Jupyter Notebook.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/lead.png');"></div>
+      <div class="panel">
+        <h3>Leadership:</h3>
+        <p>Held leadership roles as Toastmasters Secretary and Captain of Byte Bash Blitz, offering guidance and coordination in technical and community settings.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/web.png');"></div>
+      <div class="panel">
+        <h3>Web Development:</h3>
+        <p>Developing expertise in HTML and CSS for structuring and styling pages, with practical experience using React.js.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/solve.png');"></div>
+      <div class="panel">
+        <h3>Problem Solving:</h3>
+        <p>Participated in several hackathons focused on real-world challenges, showcasing analytical and solution-oriented thinking.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/analysis.png');"></div>
+      <div class="panel">
+        <h3>Data Analysis:</h3>
+        <p>Applied knowledge in cleaning and visualizing data using Power BI, contributing to data-driven project outcomes.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/team.png');"></div>
+      <div class="panel">
+        <h3>Teamwork & Flexibility:</h3>
+        <p>Experience collaborating in sports clubs and technical communities, adaptable and capable in both team member and leadership roles.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/cloud.jpg');"></div>
+      <div class="panel">
+        <h3>Cloud Computing:</h3>
+        <p>Completed AWS Cloud Foundation course and earned a badge, with foundational understanding of cloud services, particularly Amazon EC2.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/listener.png');"></div>
+      <div class="panel">
+        <h3>Listening Skills:</h3>
+        <p>Served as Listening Master in Toastmasters meetings, emphasizing observational skills and active listening.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/git.jpg');"></div>
+      <div class="panel">
+        <h3>Git & Version Control:</h3>
+        <p>Proficient in GitHub for collaborative development, version control, and maintaining clean code repositories.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('images/adapt.jpg');"></div>
+      <div class="panel">
+        <h3>Adaptability:</h3>
+        <p>Quickly adjust to new tools, team dynamics, and shifting project goals, whether it is pivoting mid-hackathon or stepping into new roles.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Star background animation
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.0 + 0.2,
+          speedY: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speedY;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    resizeCanvas();
+    createStars();
+    animateStars();
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.skill-section, .title').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
