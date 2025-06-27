@@ -112,6 +112,16 @@
 </head>
 <body>
   <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+  ⬅ Back to Planets
+  </button>
+
+  <script>
+    function goBack() {
+      window.location.href = "../index.html"; // or "../" or the exact relative path to your solar system page
+    }
+  </script>
+
 
   <div class="container">
     <div class="title" id="title">Skills</div>
