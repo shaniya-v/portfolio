@@ -116,13 +116,6 @@
   ⬅ Back to Planets
   </button>
 
-  <script>
-    function goBack() {
-      window.location.href = "../index.html"; // or "../" or the exact relative path to your solar system page
-    }
-  </script>
-
-
   <div class="container">
     <div class="title" id="title">Skills</div>
 
@@ -284,6 +277,11 @@
     document.querySelectorAll('.skill-section, .title').forEach(el => {
       observer.observe(el);
     });
+  </script>
+   <script>
+    function goBack() {
+      window.location.href = "../index.html"; // or "../" or the exact relative path to your solar system page
+    }
   </script>
 </body>
 </html>
