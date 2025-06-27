@@ -69,6 +69,38 @@ function(
 
     solarsystem.fadeOut();
 
+    // Check if direct=true is in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const directStart = urlParams.get('direct');
+    
+    if (directStart === 'true') {
+      $('.inner').hide();
+      progressPrompt.addClass('active');
+    
+      solarSystemFactory.build(solarSystemData).then(() => {
+        introScreen.hide();
+        solarsystem.fadeIn(2000, () => {
+          let seenModal = false;
+    
+          if (window.localStorage) {
+            seenModal = localStorage.getItem('seenModal');
+          }
+    
+          if (!seenModal) {
+            $('#tutorial').foundation('open');
+            $('#tutorial-got-it').on('click', () => {
+              if (window.localStorage) {
+                localStorage.setItem('seenModal', 'true');
+              }
+            });
+          }
+        });
+      });
+    
+      return; // Stop further execution — skip the renderButton part
+    }
+
+
     renderButton.one('click', ()=> {
       $('.inner').slideUp(500, ()=> {
         progressPrompt.addClass('active');
