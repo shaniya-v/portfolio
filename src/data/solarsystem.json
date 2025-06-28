@@ -105,7 +105,7 @@
         },
         {
             "id": 3,
-            "name": "Project",
+            "name": "Project & Experience",
             "diameter": 12756,
             "mass": 5.97,
             "gravity": 9.8,
@@ -165,7 +165,7 @@
         },
         {
             "id": 4,
-            "name": "Experience",
+            "name": "All in One",
             "diameter": 6792,
             "mass": 0.642,
             "gravity": 3.7,
