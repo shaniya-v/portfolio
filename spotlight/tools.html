@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shaniya - Tools</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #1f024a;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 100px auto;
+      padding: 0 20px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 60px;
+    }
+
+    .grid-row {
+      display: flex;
+      justify-content: space-around;
+      gap: 80px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.7s ease;
+      width: 6rem;
+    }
+
+    .item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ball {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 25px #c084fc;
+      border: 3px solid #e9d5ff;
+      margin-bottom: 30px;
+    }
+
+    .bar {
+      width: 15rem;
+      height: 10rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 0.4rem;
+      text-align: center;
+      font-size: 0.75rem;
+      box-shadow: 0 0 10px #a78bfa;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .bar a {
+      color: #fff7ff;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 0.65rem;
+      margin-top: 4px;
+    }
+
+    .progress-container {
+      width: 15rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 30px auto 30px;
+      height: 10px;
+      box-shadow: 0 0 8px #a78bfa;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #a78bfa;
+      text-align: right;
+      padding-right: 5px;
+      color: #fff;
+      font-size: 0.6rem;
+      line-height: 1.4;
+      border-radius: 8px 0 0 8px;
+      transition: width 2s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .grid-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+    ⬅ Go Back
+  </button>
+  <div class="container">
+    <div class="title">Tools / Platform</div>
+
+    <!-- 🔹 Row 1 -->
+    <div class="grid-row">
+      <!-- MySQL -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/sql.jpg');"></div>
+        <div class="bar">
+          <h2>MySQL</h2>
+          <p>Proficient in data serialization and normalization. Confident in choosing appropriate keys, creating efficient table structures, and managing databases effectively. </p>
+          <a href="https://drive.google.com/file/d/13PUL1RhjKxxDm-XAxoiNx1xBIJJYQsZH/view?usp=drive_link">View Certificate</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">30%</div></div>
+      </div>
+
+      <!-- GitHub -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/github.jpg');"></div>
+        <div class="bar">
+          <h2>Git/GitHub</h2>
+          <p>Completed multiple projects hosted on GitHub. Skilled in forking, cloning, deploying, and managing version control. Experienced in collaborative development—feel free to explore my GitHub page!</p>
+          <a href="https://github.com/shaniya-v/">GitHub Profile</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">80%</div></div>
+      </div>
+
+      <!-- AWS -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/aws.jpg');"></div>
+        <div class="bar">
+          <h2>AWS</h2>
+          <p>Completed the AWS Cloud Foundations course. Solid understanding of EC2 and cloud data management. Check out my badge for more!</p>
+          <a href="https://drive.google.com/file/d/13NCownhc7cbZSsn2m_SqDwAOTkE0S90n/view?usp=drive_link">AWS Badge</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">20%</div></div>
+      </div>
+    </div>
+        <!-- 🔹 Row 2 -->
+    <div class="grid-row">
+      <!-- Python -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/python.jpg');"></div>
+        <div class="bar">
+          <h2>Python</h2>
+          <p>Well-versed in Python and its frameworks. Applied Python for data cleaning, analysis in Power BI, and problem-solving on HackerRank. Visit my HackerRank profile for proof of passion.</p>
+          <a href="https://www.hackerrank.com/profile/shaniya10052006">View Profile</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">50%</div></div>
+      </div>
+
+      <!-- Jupyter Notebook -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/note.jpg');"></div>
+        <div class="bar">
+          <h2>Jupyter Notebook</h2>
+          <p>Efficient in data cleaning, exploration, and visualization using Jupyter Notebook. Strong analytical approach to storytelling with data.</p>
+          <a href="#">Repository</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">75%</div></div>
+      </div>
+
+      <!-- Power BI -->
+      <div class="item">
+        <div class="ball" style="background-image: url('images/power.jpg');"></div>
+        <div class="bar">
+          <h2>Power BI</h2>
+          <p>Skilled in migrating and visualizing data. Connected MySQL databases and transformed raw data into insightful dashboards using Power BI.</p>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">60%</div></div>
+      </div>
+    </div>
+
+    <!-- 🔹 Row 3 (Centered Blender) -->
+    <div class="grid-row" style="justify-content: center;">
+      <div class="item">
+        <div class="ball" style="background-image: url('images/blender.jpg');"></div>
+        <div class="bar">
+          <h2>Blender</h2>
+          <p>Familiar with importing/exporting 3D assets in Blender and using basic Python scripting and Geometry Nodes for procedural modeling. Also attended a Blender workshop</p>
+          <a href="https://drive.google.com/file/d/1MciG4nyVoBrUj0L8ESLrMl18KFG9APz-/view?usp=drive_link">View Certificate</a>
+        </div>
+        <div class="progress-container"><div class="progress-bar" style="width: 0%">75%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.0 + 0.2,
+          speedY: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#c084fc";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speedY;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    resizeCanvas();
+    createStars();
+    animateStars();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          const bar = entry.target.querySelector(".progress-bar");
+          if (bar && bar.style.width === "0%") {
+            bar.style.width = bar.textContent;
+          }
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".item").forEach(item => observer.observe(item));
+  </script>
+  <script>
+    function goBack() {
+      window.location.href = "/portfolio/index.html?direct=true";
+  
+  
+    }
+</script>
+</body>
+</html>
