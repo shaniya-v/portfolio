@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shaniya - growth</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #240352;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 100px auto;
+      padding: 0 20px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 100px;
+      gap: 40px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.6s ease;
+    }
+
+    .skill-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .sphere {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 25px 10px rgba(233, 223, 223, 0.890);
+      border: 3px solid white;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .sphere:hover {
+      transform: scale(1.1);
+    }
+
+    .panel {
+      flex: 1;
+      padding: 7px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.862);
+      transition: transform 0.3s ease;
+    }
+
+    .panel:hover {
+      transform: scale(1.05);
+    }
+
+    .panel h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    a {
+      color: #00bcd4; /* bright cyan */
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ff9800; /* changes color on hover for extra flair */
+      text-decoration: underline;
+    }
+
+
+    @media (max-width: 768px) {
+      .skill-section {
+        flex-direction: column !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+    ⬅ Go Back
+  </button>
+
+  <div class="container">
+    <div class="title" id="title">PROGRESSION LOG</div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('../images/basher.png');"></div>
+      <div class="panel">
+        <h3>Captain – Byte Bash Blitz:</h3>
+        <p>
+          As Captain of Byte Bash Blitz, I led dynamic tech initiatives, spearheaded collaborative coding events, and fostered a culture of innovation and learning. My role involved mentoring peers, curating engaging challenges, and driving community growth. This experience not only sharpened my technical edge but also strengthened my leadership, teamwork, and vision-building skills within a thriving developer ecosystem.
+          <a href="https://terminal.bytebashblitz.org/" target="_blank">Check out community website</a>
+        </p>
+
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('../images/tm.jpg');"></div>
+      <div class="panel">
+        <h3>Secretary – Toastmasters:</h3>
+        <p>Serving as Secretary of my Toastmasters club deepened my organizational and interpersonal strengths. I coordinated events, facilitated member engagement, and ensured smooth club operations — all while continuing to grow as a speaker and leader. Alongside my responsibilities, I earned recognitions such as Best Rookie, Quiz Winner, Evaluation Contest Winner, ISC 2nd Runner-Up, and HSC 1st Runner-Up, reinforcing both my communication excellence and community presence.</p>
+      </div>
+    </div>
+
+    <div class="skill-section">
+      <div class="sphere" style="background-image: url('../images/speak.png');"></div>
+      <div class="panel">
+        <h3>Tech-Inspired Growth Mindset:</h3>
+        <p>As technology rapidly evolves, I’m dedicated to evolving with it — not just through technical mastery, but by continuously enhancing my leadership, communication, and adaptability. Whether in front of an audience or behind the code, I strive to be a well-rounded creator, collaborator, and change-maker.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.0 + 0.2,
+          speedY: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speedY;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    resizeCanvas();
+    createStars();
+    animateStars();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.skill-section, .title').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+  <script>
+  function goBack() {
+    window.location.href = "/portfolio/index.html?direct=true";
+
+
+  }
+</script>
+</body>
+</html>
