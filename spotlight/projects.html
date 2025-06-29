@@ -119,6 +119,9 @@
 <body>
     <h1 class="neon-heading">✨ Projects✨</h1>
   <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+    ⬅ Go Back
+  </button>
   <div class="container">
     <button class="button" onclick="prevSlide()">&lt;</button>
     <div class="display-wrapper">
@@ -218,5 +221,12 @@
     createStars(500);
     animateStars();
   </script>
+  <script>
+  function goBack() {
+    window.location.href = "/portfolio/index.html?direct=true";
+
+
+  }
+</script>
 </body>
 </html>
