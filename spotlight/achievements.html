@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Acheivements</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000000;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      color: white;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgb(255, 255, 255);
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s ease-in-out infinite alternate, drift 80s linear infinite;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-200px); }
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 80px;
+      padding: 80px 20px;
+    }
+
+    .book-section {
+      width: 100%;
+      max-width: 1000px;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: all 0.8s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .book-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .book {
+      width: 380px;
+      height: 520px;
+      position: relative;
+      overflow: visible;
+      perspective: 2000px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #00f0ff99;
+      background: rgba(0, 240, 255, 0.08);
+      backdrop-filter: blur(4px);
+    }
+
+    .sheet {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-style: preserve-3d;
+      transform-origin: left;
+      transition: transform 1s ease;
+      border-radius: 10px;
+      z-index: 1;
+    }
+
+    .flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .front {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      backface-visibility: hidden;
+      box-sizing: border-box;
+      font-size: 22px;
+      text-align: center;
+      border-radius: 10px;
+      background: #001f23; /* solid background */
+      color: rgba(255,255,255,0.3);
+      font-weight: normal;
+    }
+
+    .back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      backface-visibility: hidden;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column; /* stack items vertically */
+      justify-content: center;
+      align-items: center;
+      gap: 12px; /* spacing between image and text */
+      font-size: 20px;
+      text-align: center;
+      border-radius: 10px;
+      background: #00f0ff;
+      color: #000000;
+      transform: rotateY(180deg);
+      font-weight: bold;
+      overflow: hidden; /* optional: hides content overflow */
+    }
+
+    .sheet-image {
+      max-width: 160px;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 8px #00f0ff77;
+    }
+
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 380px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #00f0ff;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00f0ff88;
+    }
+
+    button:hover {
+      background: #00cce0;
+    }
+  </style>
+  <h2 style="text-align: center; margin-bottom: 10px; font-size: 52px;">Acheivements</h2>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="container" id="container"></div>
+
+  <script>
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      const twinkle = (Math.random() * 2 + 1).toFixed(2);
+      const drift = (Math.random() * 3 + 3).toFixed(2);
+      const delay = (Math.random() * 20).toFixed(2);
+      star.style.animation = `twinkle ${twinkle}s ease-in-out infinite alternate, drift ${drift}s linear infinite`;
+      star.style.animationDelay = `${delay}s`;
+      starContainer.appendChild(star);
+    }
+
+    const booksData = [
+      {
+        title: "Toastmasters <br></br> Speech Contest Winner",
+        back: "<img src='images/hsc.jpg' class='sheet-image' /><p>Evaluation contest Winner <br></br> and <br></br> Humorous Speech Contest <br>Runner Up.</p>",
+        pages: [
+          "<img src='images/isc.jpg' class='sheet-image' /><p>International Speech Contest 2nd Runner up.</p>",
+          "By Being the Secretary of Toastmasters Club, i'm enhancing my leadership and public speaking skills.",
+          "<img src='images/tm.jpg' class='sheet-image' /><p>Thank You ! ! !</p>"
+        ]
+      },
+      {
+        title: "National Level Technical Symposium <br></br> Paper Presentation Winner",
+        back: "Every idea has a spark.",
+        pages: [
+          "I presented a paper on Women Safety, proposing an AI-powered surveillance system that uses Random Forest and other machine learning algorithms to detect anomalies, recognize gestures, and track movement across cameras. The idea leverages existing smart city infrastructure to create a safer environment through proactive threat detection and real-time alerts.",
+          "<img src='images/paper.jpg' class='sheet-image' /><p>Paper Presentation Winner ,     National Level Technical Symposium, Amritha College.</p>",
+          "<img src='images/cap.jpg' class='sheet-image' /><p>Thank You ! ! !</p>"
+        ]
+      },
+      {
+        title: "Academic Topper",
+        back: "Plan. Code. Repeat",
+        pages: [
+          "Got the 🏅 Academic Excellence Award <br></br> Recognized as the academic topper for two consecutive academic years (2023–2024 and 2024–2025) with an outstanding CGPA of 9.05 and 9.01, respectively.",
+          "<img src='images/academic.jpg' class='sheet-image' /><p>Academic Topper Award.</p>",
+          "<img src='images/smce.jpg' class='sheet-image' /><p>Thank You ! ! !</p>"
+        ]
+      },
+      {
+        title: "Byte Bash Blitz (Tech Community) <br></br> Excellence Award",
+        back: "<img src='images/top.jpg' class='sheet-image' /><p>Recognized as the Weekly Table Topper in Competitive Programming and Technical Quizzes, showcasing consistent performance and quick problem-solving skills. Actively contributing to the Byte Bash Blitz tech community</p>",
+        pages: [
+          "<img src='images/cer.jpg' class='sheet-image' /><p>Best Rookie Award<br></br>Technical Quiz Topper<br></br>Competitive Programming Topper</p>",
+          "<img src='images/group.jpg' class='sheet-image' /><p>As the Captain Bash, I’m enhancing my leadership, mentoring peers, and driving innovation within the team through hands-on experience and community engagement.</p>",
+          "<img src='images/basher.png' class='sheet-image' /><p>Thank You ! ! !</p>"
+        ]
+      }
+    ];
+
+    const container = document.getElementById('container');
+    const allBooks = [];
+    const currentPages = [];
+
+    booksData.forEach((bookData, idx) => {
+      const bookId = `book${idx + 1}`;
+      allBooks.push(bookId);
+      currentPages.push(0);
+
+      const section = document.createElement('div');
+      section.className = 'book-section';
+
+      const book = document.createElement('div');
+      book.className = 'book';
+      book.id = bookId;
+
+      const cover = document.createElement('div');
+      cover.className = 'sheet';
+      cover.innerHTML = `<div class="front"></div><div class="back">${bookData.title}</div>`;
+      book.appendChild(cover);
+
+      const titleSheet = document.createElement('div');
+      titleSheet.className = 'sheet';
+      titleSheet.innerHTML = `<div class="front"></div><div class="back">${bookData.back}</div>`;
+      book.appendChild(titleSheet);
+
+      
+      bookData.pages.forEach((content, i) => {
+        const sheet = document.createElement('div');
+        sheet.className = 'sheet';
+        sheet.innerHTML = `<div class="front"></div><div class="back">${content}</div>`;
+
+
+        book.appendChild(sheet);
+      });
+
+      const buttons = document.createElement('div');
+      buttons.className = 'buttons';
+      buttons.innerHTML = `
+        <button onclick="prevPage(${idx})">Prev</button>
+        <button onclick="nextPage(${idx})">Next</button>
+      `;
+
+      section.appendChild(book);
+      section.appendChild(buttons);
+      container.appendChild(section);
+    });
+
+    function updatePages(bookIndex) {
+      const book = document.getElementById(allBooks[bookIndex]);
+      const sheets = book.querySelectorAll('.sheet');
+      sheets.forEach((sheet, index) => {
+        if (index <= currentPages[bookIndex]) {
+          sheet.classList.add('flipped');
+          sheet.style.zIndex = index;
+        } else {
+          sheet.classList.remove('flipped');
+          sheet.style.zIndex = sheets.length - index;
+        }
+      });
+    }
+
+    function nextPage(index) {
+      const book = document.getElementById(allBooks[index]);
+      const sheets = book.querySelectorAll('.sheet');
+      if (currentPages[index] < sheets.length - 1) {
+        currentPages[index]++;
+        updatePages(index);
+      }
+    }
+
+    function prevPage(index) {
+      if (currentPages[index] > 0) {
+        currentPages[index]--;
+        updatePages(index);
+      }
+    }
+
+    allBooks.forEach((_, i) => updatePages(i));
+
+    const sections = document.querySelectorAll('.book-section');
+    const reveal = () => {
+      sections.forEach(sec => {
+        if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
+          sec.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('load', reveal);
+  </script>
+</body>
+</html>
