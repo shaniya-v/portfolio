@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Education</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background-color: #000;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      position: relative;
+      overflow-y: auto;
+      padding-bottom: 200px;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    h1 {
+      color: #10c1e9;
+      font-size: 60px;
+      margin: 0 0 60px 0;
+      text-align: center;
+    }
+
+    .terminal {
+      width: 100%;
+      max-width: 500px;
+      background: #000;
+      color: #00ff00;
+      padding: 20px;
+      border: 2px solid #00ff00;
+      margin-bottom: 50px;
+      box-shadow: 0 0 15px #00ff0077;
+    }
+
+    .terminal input {
+      width: 100%;
+      background: black;
+      color: #00ff00;
+      border: none;
+      outline: none;
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      grid-template-rows: repeat(8, 50px);
+      border: 2px solid rgba(0, 255, 255, 0.6);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+      margin-bottom: 30px;
+    }
+
+    .info-box {
+      margin-top: 50px;
+      background: #000;
+      padding: 20px;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00ffcc44;
+      display: none;
+      white-space: pre-line;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      position: relative;
+      background-color: rgba(0, 255, 255, 0.1);
+      border: 1px solid rgba(39, 183, 180, 0.923);
+    }
+
+    .queen {
+      color: #ffcc00;
+      background-color: #064c3a !important;
+    }
+
+    .notify::after {
+      content: 'Click Me';
+      position: absolute;
+      bottom: -20px;
+      background: #ff66cc;
+      color: white;
+      font-size: 12px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+    ⬅ Go Back
+  </button>
+  <h1>Education </h1>
+  <div class="terminal">
+    <div>> Commands: <code>12th</code>, <code>sem1</code>, <code>sem2</code>, <code>sem3</code>, <code>sem4</code></div>
+    <input type="text" id="terminalInput" placeholder="Enter command...">
+  </div>
+  <div class="board" id="board"></div>
+  <div class="info-box" id="infoBox"></div>
+
+  <script>
+    const board = document.getElementById('board');
+    const infoBox = document.getElementById('infoBox');
+    const input = document.getElementById('terminalInput');
+    const cellMap = {};
+
+    const queens = [
+      { row: 0, col: 0, title: 'HSC', info: '🏫 ST.Antony\'s Higher Secondary School\n📅 2022 – 2023\n📊 Scored: 83%' },
+      { row: 1, col: 2, title: 'sem1', info: '📘 Semester 1\n📚 Python Programming\n⭐ GPA: 9.05' },
+      { row: 2, col: 4, title: 'sem2', info: '📘 Semester 2\n📚 C Programming\n⭐ GPA: 8.75' },
+      { row: 3, col: 6, title: 'sem3', info: '📘 Semester 3\n📚 OOP (java), Data Science, Data Structures\n⭐ GPA: 9.35' },
+      { row: 4, col: 1, title: 'sem4', info: '📘 Semester 4\n📚 Operating Systems, Algorithms, DBMS\n⭐ GPA: waiting...' }
+    ];
+
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+
+        const queen = queens.find(q => q.row === row && q.col === col);
+        if (queen) {
+          cell.innerHTML = '♛';
+          cell.classList.add('queen');
+          cell.dataset.title = queen.title;
+          cell.onclick = () => {
+            infoBox.style.display = 'block';
+            infoBox.innerHTML = `<strong>${queen.title.toUpperCase()}</strong>\n${queen.info}`;
+            cell.classList.remove('notify');
+            input.value = '';
+            infoBox.scrollIntoView({ behavior: 'smooth' });
+          };
+          cellMap[queen.title.toLowerCase()] = cell;
+        }
+
+        board.appendChild(cell);
+      }
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const value = input.value.trim().toLowerCase();
+        input.value = '';
+        const queen = queens.find(q => q.title.toLowerCase() === value);
+        if (queen && cellMap[value]) {
+          const cell = cellMap[value];
+          cell.classList.add('notify');
+          infoBox.style.display = 'block';
+          infoBox.innerText = `✅ Queen for '${queen.title}' is now active — click the highlighted queen.`;
+          infoBox.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          infoBox.style.display = 'block';
+          infoBox.innerText = `❌ Unknown command: '${value}'. Try: 12th, sem1, sem2, sem3, sem4.`;
+          infoBox.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+
+    // Moving stars background
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        velocity: Math.random() * 0.3 + 0.1
+      });
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.velocity;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+  </script>
+  <script>
+  function goBack() {
+    window.location.href = "/portfolio/index.html?direct=true";
+
+
+  }
+</script>
+</body>
+</html>
