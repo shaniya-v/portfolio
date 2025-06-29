@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>experience</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #1f024a;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 100px auto;
+      padding: 0 20px;
+      min-height: 100vh;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 60px;
+    }
+
+    .grid-row {
+      display: flex;
+      justify-content: space-around;
+      gap: 80px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.7s ease;
+      width: 6rem;
+    }
+
+    .item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ball {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 25px #c084fc;
+      border: 3px solid #e9d5ff;
+      margin-bottom: 10px;
+    }
+
+    .bar {
+      width: 15rem;
+      height: 10rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 0.4rem;
+      text-align: center;
+      font-size: 0.75rem;
+      box-shadow: 0 0 10px #a78bfa;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .bar a {
+      color: #fff7ff;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 0.65rem;
+      margin-top: 4px;
+    }
+
+    /* Square Panels */
+    .panel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .panel {
+      width: 80%;
+      max-width: 800px;
+      height: 340px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      border: 2px solid #a855f7;
+      box-shadow: 0 0 15px #a855f7, 0 0 30px #a855f7;
+      padding: 20px;
+      color: white;
+      font-size: 1.2rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .panel.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .grid-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <div class="container">
+    <div class="title">Tools / Platform</div>
+
+    <!-- Existing tool items -->
+    <div class="grid-row">
+      <!-- items go here -->
+    </div>
+    <div class="grid-row">
+      <!-- items go here -->
+    </div>
+
+    <!-- New transparent square panels -->
+    <div class="panel-container">
+      <div class="panel">
+        <h3>AK INFOPARK INTERNSHIP</h3>
+        <ul style="list-style-type: disc;">
+          <li style="margin-bottom: 10px;">Applied Object-Oriented Programming in Python to build the backend of a banking application with structured, modular code.</li>
+          <li style="margin-bottom: 10px;">Used Jupyter Notebook for comprehensive data cleaning, transformation, and exploratory analysis.</li>
+          <li style="margin-bottom: 10px;">Integrated Power BI for dynamic data visualization, enabling clearer insight into financial datasets.</li>
+          <li style="margin-bottom: 10px;">Developed a mini data pipeline: from raw data ingestion to interactive dashboards, streamlining the analytics workflow.</li>
+          <li style="margin-bottom: 10px;">Strengthened practical understanding of Python-based data science workflows, balancing backend logic and visual storytelling.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>CAPNIS INFOTECH INTERNSHIP</h3>
+        <ul style="list-style-type: disc;">
+          <li style="margin-bottom: 10px;">Built a beginner-friendly e-commerce website using PHP and Laravel, ensuring responsiveness and functionality.</li>
+          <li style="margin-bottom: 10px;">Configured the Apache server environment for local development and deployment of web applications.</li>
+          <li style="margin-bottom: 10px;">Integrated MySQL for managing user, product, and order data efficiently within the e-commerce framework.</li>
+          <li style="margin-bottom: 10px;">Explored web scraping techniques to extract structured data from external websites.</li>
+          <li style="margin-bottom: 10px;">Learned to rebuild and customize existing websites locally, adapting them with modern design and functionality.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.0 + 0.2,
+          speedY: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#c084fc";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speedY;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    resizeCanvas();
+    createStars();
+    animateStars();
+
+    // Reveal animations on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".item, .panel").forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
