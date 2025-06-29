@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      height: 100%;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 100px 20px 60px;
+    }
+
+    .title {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 40px;
+      color: #00ffff;
+    }
+
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 300px;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+
+    .icons a {
+      color: #00ffff;
+      font-size: 2.5rem;
+      text-decoration: none;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .icons a:hover {
+      transform: scale(1.2);
+      color: white;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      margin-top: -40px;
+      margin-bottom: 60px;
+    }
+
+    .contact-links a {
+      color: #00ffff;
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .contact-links a:hover {
+      transform: scale(1.1);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 1.2rem;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #ffffff44;
+      color: #00ffff;
+      letter-spacing: 1px;
+      font-weight: bold;
+      position: relative;
+      z-index: 1;
+    }
+    .contact-links a i {
+      margin-right: 8px;
+    }
+
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <button onclick="goBack()" style="position: fixed; top: 20px; left: 20px; padding: 10px 20px; background-color: white; color: black; border: none; border-radius: 5px; cursor: pointer; z-index: 9999;">
+    ⬅ Go Back
+  </button>
+
+  <div class="container">
+    <div class="title">Connect with Me</div>
+
+    <div class="icons">
+      <a href="https://github.com/shaniya-v" target="_blank" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+
+      <a href="https://www.linkedin.com/in/shaniya-v-02b514280/" target="_blank" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+
+    <div class="contact-links">
+      <a href="tel:+919360208244" title="Call Me">
+        <i class="fas fa-phone"></i> +91 93602 08244
+      </a>
+
+      <a href="mailto:shaniya10052006@gmail.com" title="Email Me">
+        <i class="fas fa-envelope"></i> shaniya10052006@gmail.com
+      </a>
+    </div>
+
+
+    <footer>
+      Click to connect and collaborate with me!
+    </footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.0 + 0.2,
+          speedY: Math.random() * 0.9 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speedY;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars();
+    });
+
+    resizeCanvas();
+    createStars();
+    animateStars();
+  </script>
+  <script>
+  function goBack() {
+    window.location.href = "/portfolio/index.html?direct=true";
+
+
+  }
+</script>
+</body>
+</html>
