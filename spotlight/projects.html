@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Red Swipe Display</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
+      color: white;
+    }
+
+    canvas {
+      position: fixed;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+
+    .container {
+      position: relative;
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .display-wrapper {
+      position: relative;
+      width: 50%;
+      height: 70%;
+      overflow: hidden;
+      border: 2px solid #ff0040;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff0040;
+      background: rgba(255, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      margin: 0 60px;
+    }
+
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .slide {
+      width: 25%; /* Fix: Adjusted width to fit 4 slides evenly in 400% container */
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffcccc;
+      padding: 20px;
+      text-align: center;
+      overflow: hidden;
+      word-break: break-word;
+    }
+
+    .zoom {
+      animation: zoomIn 0.6s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .button {
+      font-size: 2.5rem;
+      color: #ff0040;
+      background: transparent;
+      border: 2px solid #ff0040;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #ff0040;
+    }
+
+    .button:hover {
+      background-color: #ff004010;
+      transform: scale(1.1);
+    }
+    .neon-heading {
+      text-align: center;
+      font-size: 3rem;
+      color: #ff0040;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+  </style>
+</head>
+<body>
+    <h1 class="neon-heading">✨ Projects✨</h1>
+  <canvas id="stars"></canvas>
+  <div class="container">
+    <button class="button" onclick="prevSlide()">&lt;</button>
+    <div class="display-wrapper">
+      <div class="slider" id="slider">
+        <div class="slide zoom">project updation will taken place soon 🌟</div>
+        <div class="slide">Discover a glowing UI<br/>with smooth swipe effects ✨</div>
+        <div class="slide">Navigate freely<br/>through a galaxy of creativity 🚀</div>
+        <div class="slide">Let your ideas shine<br/>in neon brilliance! 💡</div>
+      </div>
+    </div>
+    <button class="button" onclick="nextSlide()">&gt;</button>
+  </div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const slides = slider.children;
+    const totalSlides = slides.length;
+    let index = 0;
+
+    function updateSlider() {
+      slider.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
+      for (let slide of slides) {
+        slide.classList.remove('zoom');
+      }
+      void slides[index].offsetWidth;
+      slides[index].classList.add('zoom');
+    }
+
+    function nextSlide() {
+      index = (index + 1) % totalSlides;
+      updateSlider();
+    }
+
+    function prevSlide() {
+      index = (index - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    }
+
+    // Swipe detection
+    let startX = 0;
+    const wrapper = document.querySelector('.display-wrapper');
+
+    wrapper.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+    });
+
+    wrapper.addEventListener('touchend', e => {
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextSlide();
+      else if (endX - startX > 50) prevSlide();
+    });
+
+    // Starry background
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5,
+          velocity: Math.random() * 0.4 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ff0040";
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.velocity;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      }
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars(500);
+    });
+
+    resizeCanvas();
+    createStars(500);
+    animateStars();
+  </script>
+</body>
+</html>
