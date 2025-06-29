@@ -171,14 +171,25 @@ function(Moon, ColorManager) {
       targetObject.orbitCentroid.updateMatrixWorld();
 
       //redirect 
-      if (targetObject.name === 'Skills') {
+      const pages = [
+        'Skills',
+        'Tools',
+        'Projects',
+        'Experience',
+        'Achievements',
+        'Growth',
+        'Education',
+        'Connect',
+        'Portfolio'
+      ];
+      
+      if (pages.includes(targetObject.name)) {
         setTimeout(() => {
-          window.location.href = 'spotlight/skills.html';
+          window.location.href = `spotlight/${targetObject.name.toLowerCase()}.html`;
         }, 1000);
+      
+        this.dispatchTravelCompleteEvent(targetObject);
       }
-
-      this.dispatchTravelCompleteEvent(targetObject);
-    }
 
     /**
      * Updates the target's highlight geometry based on the camera's
