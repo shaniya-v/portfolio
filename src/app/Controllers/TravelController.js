@@ -151,53 +151,63 @@ function(Moon, ColorManager) {
     }
 
     handleComplete(targetObject, cameraTarget) {
-  cameraTarget = cameraTarget || targetObject.objectCentroid;
+      cameraTarget = cameraTarget || targetObject.objectCentroid;
+    
+      THREE.SceneUtils.detach(this.camera, this.camera.parent, this.scene);
+      THREE.SceneUtils.attach(this.camera, this.scene, cameraTarget);
+    
+      var transition = this.colorManager.fadeTo(
+        targetObject.highlight,
+        targetObject.highlight.material.color,
+        { r: 59, g: 234, b: 247 }, // ✅ fixed color object
+        3000
+      ).onComplete(() => {
+        targetObject.core.remove(targetObject.highlight);
+      });
+    
+      this.camera.lookAt(new THREE.Vector3());
+    
+      targetObject.core.updateMatrixWorld();
+      targetObject.orbitCentroid.updateMatrixWorld();
+    
+      // 🌐 Redirection based on object name
+      const redirectMap = {
+        'Skills': 'spotlight/skills.html',
+        'Tools': 'spotlight/tools.html',
+        'Projects': 'spotlight/projects.html',
+        'Experience': 'spotlight/experience.html',
+        'Achievements': 'spotlight/achievements.html',
+        'Growth': 'spotlight/growth.html',
+        'Education': 'spotlight/education.html',
+        'Connect': 'spotlight/connect.html',
+        'Portfolio': 'spotlight/portfolio.html'
+      };
+    
+      if (redirectMap[targetObject.name]) {
+        setTimeout(() => {
+          window.location.href = redirectMap[targetObject.name];
+        }, 1000);
+      }
+    
+      this.dispatchTravelCompleteEvent(targetObject);
+    }
 
-  THREE.SceneUtils.detach(this.camera, this.camera.parent, this.scene);
-  THREE.SceneUtils.attach(this.camera, this.scene, cameraTarget);
+    /**
+     * Updates the target's highlight geometry based on the camera's
+     * distance from the target.
+     *
+     * @param {Object} target
+     */
+    updateTargetHighlight(target) {
+      target.core.remove(target.highlight);
 
-  var transition = this.colorManager.fadeTo(
-    targetObject.highlight,
-    targetObject.highlight.material.color,
-    { r: 59, g: 234, b: 247 }, // also fixed: you had `b` twice
-    3000
-  ).onComplete(() => {
-    targetObject.core.remove(targetObject.highlight);
-  });
+      var distanceTo = this.camera.position.distanceTo(target.threeObject.position);
+      var highlightDiameter = distanceTo * 0.011; // 1.1% of distance to target
 
-  this.camera.lookAt(new THREE.Vector3());
-
-  targetObject.core.updateMatrixWorld();
-  targetObject.orbitCentroid.updateMatrixWorld();
-
-  // Redirect logic
-  const pages = [
-    'Skills',
-    'Tools',
-    'Projects',
-    'Experience',
-    'Achievements',
-    'Growth',
-    'Education',
-    'Connect',
-    'Portfolio'
-  ];
-
-  if (pages.includes(targetObject.name)) {
-    setTimeout(() => {
-      window.location.href = `spotlight/${targetObject.name.toLowerCase()}.html`;
-    }, 1000);
-
-    this.dispatchTravelCompleteEvent(targetObject);
+      target.highlight = highlightDiameter;
+      target.highlight.material.opacity = 0.9;
+    }
   }
-},
 
-updateTargetHighlight(target) {
-  target.core.remove(target.highlight);
-
-  var distanceTo = this.camera.position.distanceTo(target.threeObject.position);
-  var highlightDiameter = distanceTo * 0.011;
-
-  target.highlight = highlightDiameter;
-  target.highlight.material.opacity = 0.9;
-}
+  return TravelController;
+});
