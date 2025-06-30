@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>Shaniya’s CodeVerse</title>
+  <style>
+    body {
+      background-color: #000; /* Your dark cosmic background */
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    #stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1; /* Behind everything */
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    h2 {
+      text-align: center;
+      animation: glow 2s infinite alternate;
+      font-size: 50px;
+    }
+    h1 {
+      text-align: center;
+      animation: glow 2s infinite alternate;
+      font-size: 30px;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #00ffcc; }
+      to { text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff; }
+    }
+    .terminal {
+      background: #000;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      margin: 60px auto;
+      box-shadow: 0 0 20px #00ffcc44;
+    }
+    .output {
+      white-space: pre-wrap;
+      margin-bottom: 10px;
+    }
+    input {
+      background: #0d0d0d;
+      border: none;
+      color: #00ffcc;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+    }
+    section {
+      padding: 50px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .skills-container, .edu-timeline { margin-top: 30px; }
+    .skill-entry { margin-bottom: 20px; }
+    .skill-name { font-weight: bold; color: #0ff; }
+    .xp-bar {
+      background: #003333;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 10px;
+      margin: 5px 0;
+    }
+    .xp-fill {
+      background: linear-gradient(90deg, #00ccff, #00ffff);
+      height: 100%;
+      transition: width 1s ease;
+    }
+    .cert-badge {
+      font-size: 0.85rem;
+      color: #00ccff;
+      margin-top: 4px;
+    }
+    .edu-card {
+      background: #000;
+      border-left: 4px solid #00ffff;
+      border-top: 4px solid #00ffff;
+      padding: 15px 20px;
+      margin-bottom: 30px;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: all 0.6s ease;
+    }
+    .edu-card.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .edu-highlight {
+      color: #88ffff;
+      font-style: italic;
+      margin-top: 5px;
+    }
+    .project-card {
+      width: 220px;
+      background: #000;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px;
+    }
+    .projects-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #project-controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    select {
+      padding: 5px 10px;
+      background: #111;
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 5px;
+    }
+        .book-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      perspective: 2000px;
+    }
+    .book {
+      width: 380px;
+      height: 500px;
+      position: relative;
+    }
+    .sheet {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-style: preserve-3d;
+      transform-origin: left;
+      transition: transform 1s;
+    }
+    .sheet .front,
+    .sheet .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      border: 2px solid #00f0ff;
+      border-radius: 10px;
+      font-size: 1.2rem; /* or 18px, 2rem, etc. */
+      text-align: center;
+    }
+    .sheet .front {
+      background: #000;
+      color: #00f0ff;
+    }
+    .sheet .back {
+      background: #00f0ff;
+      color: #000;
+      transform: rotateY(180deg);
+    }
+    .flipped {
+      transform: rotateY(-180deg);
+    }
+    .nav-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .nav-buttons button {
+      padding: 8px 16px;
+      background: #00f0ff;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .experience-slider {
+      position: relative;
+      max-width: 600px;
+      margin: 0 10px;
+      overflow: hidden;
+    }
+    .experience-track {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+    .experience-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      background: #000;
+      padding: 20px;
+      border-radius: 8px;
+      border: 2px solid #00ffff;
+    }
+    .exp-nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .exp-nav-btn {
+      font-size: 2rem;
+      cursor: pointer;
+      background: none;
+      color: #00ffff;
+      border: none;
+      margin: 0 5px;
+    }
+    .icons a {
+      color: #00ffff; /* Neon cyan – matches your CodeVerse glow */
+      transition: color 0.3s ease;
+    }
+
+    .icons a:hover {
+      color: #ebe1eb; /* Pink glow on hover */
+    }
+    .sheet-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .sheet-content img {
+      max-width: 10%;
+      max-height: 10px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 12px #bdf3f7ee;
+    }
+    .about-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 50px 30px 30px;
+      position: relative;
+    }
+
+    .about-text {
+      max-width: 70%;
+      text-align: center;
+    }
+
+    .typing {
+      font-size: 9.8rem;
+      text-transform: uppercase;
+      color: #00ffff;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #00ffff;
+      width: 0;
+      animation: typing 3s steps(20, end) forwards, blink 0.7s infinite;
+    }
+
+
+    .summary {
+      font-size: 1.1rem;
+      margin-top: 40px;
+      color: #aaffff;
+      line-height: 1.6;
+      margin-bottom: 60px;
+    }
+
+    .profile-pic {
+      width: 170px;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #00ffff;
+      box-shadow: 0 0 15px #c1e8e8fa;
+      margin-bottom: 25px
+    }
+    .about-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 60px;
+    }
+
+    .about-photo {
+      width: 170px;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #00ffff;
+      box-shadow: 0 0 15px #96ececfb;
+      margin-bottom: 25px;
+    }
+
+    .about-text-centered {
+      text-align: center;
+    }
+
+    .typing {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00ffff;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 4px solid #00ffff;
+      width: 0;
+      animation: typing 3s steps(25) forwards, blink 0.75s step-end infinite;
+    }
+
+    .summary {
+      font-size: 1.1rem;
+      color: #aaffff;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+  .board {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      grid-template-rows: repeat(8, 50px);
+      border: 2px solid rgba(7, 252, 252, 0.951);
+      box-shadow: 0 0 20px rgba(153, 236, 236, 0.927);
+      margin: 60px auto 30px;
+      background-color: transparent;
+      flex-shrink: 0;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      background-color: rgba(10, 232, 232, 0.05);
+      border: 1px solid rgba(9, 234, 230, 0.923);
+      position: relative;
+    }
+    .queen {
+      color: #ffa600;
+      background-color: #0b8c88 !important;
+    }
+    .notify::after {
+      content: 'Click Me';
+      position: absolute;
+      bottom: -20px;
+      background: #ff66cc;
+      color: white;
+      font-size: 12px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      animation: blinkOpacity 1s infinite;
+    }
+    .info-box {
+      background: #000;
+      padding: 20px;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #b5eee2;
+      display: none;
+      white-space: pre-line;
+      width: 320px;
+      max-width: 600px;
+      min-height: 100px;
+      margin-bottom: 80px;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+    }
+
+    .queen-label {
+      font-size: 10px;
+      color: #ffccff;
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+    .edu-flex {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    @keyframes blinkOpacity {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    
+
+    /* Typing effect */
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 21ch; }
+    }
+
+    @keyframes blink {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #00ffff; }
+    }
+
+
+  </style>
+</head>
+<body>
+  <div id="stars-container"></div>
+  <div class="about-wrapper">
+    <img src="your-photo.jpg" alt="Shaniya" class="about-photo" />
+    <div class="about-text-centered">
+      <div class="typing" id="typing">HEY, THIS IS SHANIYA,</div>
+      <p class="summary">
+        Leading with logic, learning with passion, and creating with purpose<br></br>
+        🎓 B.E Computer Science<br></br>
+
+        🌟 Secretary – Toastmasters Club | ⚡ Captain – Byte-Bash-Blitz Tech Community<br></br> 
+
+        💻 Aspiring Software Engineer | AI Enthusiast<br></br>
+
+        I'm someone who finds joy in solving real-world problems, leading with questions, and turning ideas into action.<br>Whether it's hosting events, brainstorming with my tech team, or presenting thoughts with a mic in hand<br>I stay curious, creative, and committed.👀 Curious how I connect code, community, and communication? Keep scrolling—you’ll see.
+        <br>
+        <a href = "#", target="_blank", style="color: white">Click to view my resume</a>
+      </p>
+    </div>
+  </div>
+    <h1>Welcome to Shaniya’s CodeVerse 💫</h1>
+  <div class="terminal">
+    <div class="output" id="terminal-output">
+      Type a command (e.g., <b>skills</b>, <b>projects</b>, <b>education</b>, <b>achievements</b>, <b>experience</b>, <b>connect</b>) and press Enter:
+    </div>
+    <input type="text" id="terminal-input" placeholder=">_ Your command here..." autofocus />
+  </div>
+
+  
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="edu-flex">
+      <div class="board" id="board"></div>
+      <div class="info-box" id="infoBox"></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>🧠 Skills & Certificates</h2>
+    <div class="skills-container" id="skills-container"></div>
+  </section>
+
+  <section id="projects">
+    <h2>📊 Projects</h2>
+    <div id="project-controls">
+      <label for="sort-select">Sort by:</label>
+      <select id="sort-select" onchange="sortProjects()">
+        <option value="year-asc">Year ↑</option>
+        <option value="year-desc">Year ↓</option>
+        <option value="difficulty">Difficulty</option>
+        <option value="title">Title</option>
+      </select>
+    </div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <section id="achievements">
+    <h2>🏆 Achievements Book</h2>
+    <div class="book-container">
+      <div class="book" id="flip-book">
+        <div class="sheet">
+          <div class="front">
+            My Achievements
+          </div>
+          <div class="back">
+            <img src="file:///C:/Users/shani/OneDrive/ASSIGNMENT/firebase.png" style="width: 100px; height: auto;" alt="Achievement" />
+          </div>
+        </div>
+        <div class="sheet">
+          <div class="front">🎖️ 📜 Toastmasters Club level Evaluation contest Winner <br></br> and <br></br> Humorous Speech Contest <br>Runner Up.<br> International Speech Contest 2nd Runner UP </div>
+          <div class="back">
+            <img src="file:///C:/Users/shani/OneDrive/ASSIGNMENT/firebase.png" style="width: 100px; height: auto;" alt="Achievement" />
+          </div>
+        </div>
+        <div class="sheet">
+          <div class="front">👩‍💻 Paper Presentation Winner ,     National Level Technical Symposium, Amritha College.</div>
+          <div class="back">
+            <img src="file:///C:/Users/shani/OneDrive/ASSIGNMENT/firebase.png" style="width: 100px; height: auto;" alt="Achievement" />
+          </div>
+        </div>
+        <div class="sheet">
+          <div class="front"> 🏅 Academic Excellence Award <br></br> Recognized as the academic topper for two consecutive academic years (2023–2024 and 2024–2025) with an outstanding CGPA of 9.05 and 9.01, respectively.</div>
+          <div class="back"></div>
+        </div>
+        <div class="sheet">
+          <div class="front">👩‍💻 Web scraping project using Firebase</div>
+          <div class="back">🎉 Thank you for flipping through!</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button onclick="flipBook(-1)">Prev</button>
+      <button onclick="flipBook(1)">Next</button>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2>💼 Experience</h2>
+    <div class="exp-nav-container">
+      <button class="exp-nav-btn" onclick="prevExpSlide()">❮</button>
+      <div class="experience-slider">
+        <div class="experience-track" id="experience-track">
+          <div class="experience-slide">
+            <h3>Intern - Web Development</h3>
+            <p><b>Company:</b> AK InFOPARK</p>
+            <p><b>Duration:</b> Jun 2023 – Aug 2023</p>
+            <p>Developed a responsive web portal using React and Tailwind.</p>
+          </div>
+          <div class="experience-slide">
+            <h3>Project Intern - AI/ML</h3>
+            <p><b>Company:</b> XYZ Innovations</p>
+            <p><b>Duration:</b> Jan 2024 – Apr 2024</p>
+            <p>Trained deep learning models for gesture recognition using TensorFlow.</p>
+          </div>
+        </div>
+      </div>
+      <button class="exp-nav-btn" onclick="nextExpSlide()">❯</button>
+    </div>
+  </section>
+  <section id="find-me" style="text-align: center; padding: 40px 20px;">
+    <h2>📬 Find Me On</h2>
+    <div class="icons" style="font-size: 2rem; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
+      <a href="https://github.com/shaniya-v" target="_blank" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/shaniya-v-02b514280/" target="_blank" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="mailto:shaniya10052006@gmail.com" title="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="tel:+919360208244" title="Phone">
+        <i class="fas fa-phone"></i>
+      </a>
+      <a href="https://yourdomain.com/resume.pdf" target="_blank" title="Resume">
+        <i class="fas fa-file-alt"></i>
+      </a>
+    </div>
+  </section>
+
+
+    <script>
+    // Flip book logic
+    let flipIndex = 0;
+    const sheets = document.querySelectorAll("#flip-book .sheet");
+
+    function flipBook(direction) {
+      if (direction === 1 && flipIndex < sheets.length) {
+        sheets[flipIndex].style.zIndex = flipIndex + 1;
+        sheets[flipIndex].classList.add("flipped");
+        flipIndex++;
+      } else if (direction === -1 && flipIndex > 0) {
+        flipIndex--;
+        sheets[flipIndex].classList.remove("flipped");
+        sheets[flipIndex].style.zIndex = sheets.length - flipIndex;
+      }
+    }
+
+  
+
+    // Skill bars
+    const skills = [
+      { name: "Python", xp: 55 },
+      { name: "AWS Cloud", xp: 30 },
+      { name: "MySQL", xp: 35 },
+      { name: "PowerBI", xp: 32 },
+      { name: "Java", xp: 38}
+    ];
+
+    function revealSkills() {
+      const container = document.getElementById("skills-container");
+      container.innerHTML = "";
+      skills.forEach((s) => {
+        const div = document.createElement("div");
+        div.className = "skill-entry";
+        div.innerHTML = `
+          <div class='skill-name'>🔹 ${s.name}</div>
+          <div class='xp-bar'><div class='xp-fill' style='width:${s.xp}%' title='${s.xp}%'></div></div>
+          <div>${s.xp}%</div>
+          ${s.cert ? `<div class='cert-badge'>🏅 Certificate: ${s.cert}</div>` : ""}
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Projects rendering + sorting
+    const projects = [
+      { title: "Women’s Safety AI", tech: "AI/ML", year: 2024, difficulty: 5, link: "#" },
+      { title: "Cyberbullying Detector", tech: "Android/ML", year: 2023, difficulty: 4, link: "#" },
+      { title: "3D Portfolio", tech: "Three.js", year: 2022, difficulty: 3, link: "#" },
+      { title: "Code Game", tech: "JavaScript", year: 2024, difficulty: 2, link: "#" }
+    ];
+
+    function renderProjects() {
+      const container = document.getElementById("projects-grid");
+      container.innerHTML = "";
+      projects.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.innerHTML = `
+          <h4>${p.title}</h4>
+          <p><b>Tech:</b> ${p.tech}</p>
+          <p><b>Year:</b> ${p.year}</p>
+          <p><b>Difficulty:</b> ${p.difficulty}/5</p>
+          <a href="${p.link}" style="color: #00ffff;" target="_blank">View</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function sortProjects() {
+      const sortBy = document.getElementById("sort-select").value;
+      if (sortBy === "year-asc") projects.sort((a, b) => a.year - b.year);
+      else if (sortBy === "year-desc") projects.sort((a, b) => b.year - a.year);
+      else if (sortBy === "difficulty") projects.sort((a, b) => b.difficulty - a.difficulty);
+      else if (sortBy === "title") projects.sort((a, b) => a.title.localeCompare(b.title));
+      renderProjects();
+    }
+
+    // Experience slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".experience-slide");
+    const track = document.getElementById("experience-track");
+
+    function updateSlidePosition() {
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function nextExpSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      updateSlidePosition();
+    }
+
+    function prevExpSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      updateSlidePosition();
+    }
+
+    
+
+    // Terminal input
+    // Terminal input
+    document.getElementById("terminal-input").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const command = this.value.trim().toLowerCase();
+        const output = document.getElementById("terminal-output");
+        output.innerHTML += `\n> ${command}\n`;
+
+        if (command === "education") {
+          document.getElementById("education").scrollIntoView({ behavior: "smooth" });
+        } else if (command === "skills") {
+          revealSkills();
+          document.getElementById("skills").scrollIntoView({ behavior: "smooth" });
+        } else if (command === "projects") {
+          renderProjects();
+          document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+        } else if (command === "achievements") {
+          document.getElementById("achievements").scrollIntoView({ behavior: "smooth" });
+        } else if (command === "connect") {
+          document.getElementById("find-me").scrollIntoView({ behavior: "smooth" });
+        } else if (command === "experience") {
+          document.getElementById("experience").scrollIntoView({ behavior: "smooth" });
+        } else if (cellMap[command]) {
+          const targetCell = cellMap[command];
+          targetCell.classList.add("notify");
+          document.getElementById("education").scrollIntoView({ behavior: "smooth" });
+        } else {
+          output.innerHTML += "❌ Unknown command.";
+        }
+
+        this.value = "";
+      }
+    });
+
+
+    // Load default sections
+    revealSkills();
+    renderProjects();
+  </script>
+  <script>
+    const starContainer = document.getElementById("stars-container");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.animationDuration = `${1 + Math.random() * 2}s`;
+      starContainer.appendChild(star);
+    }
+
+    // ... your other script content like revealSkills(), terminal input etc.
+  </script>
+  <script>
+    const board = document.getElementById('board');
+    const infoBox = document.getElementById('infoBox');
+    const terminalInput = document.getElementById('terminal-input');
+    const cellMap = {};
+
+    const queens = [
+      { row: 0, col: 0, title: '12th', info: '🏫 ST. Antony\'s Higher Secondary School\n📅 2022 – 2023\n📊 Scored: 83%' },
+      { row: 1, col: 2, title: 'sem1', info: '📘 Semester 1\n📚 Python Programming\n⭐ GPA: 9.05' },
+      { row: 2, col: 4, title: 'sem2', info: '📘 Semester 2\n📚 C Programming\n⭐ GPA: 8.75' },
+      { row: 3, col: 6, title: 'sem3', info: '📘 Semester 3\n📚 OOP (Java), Data Science, Data Structures\n⭐ GPA: 9.35' },
+      { row: 4, col: 1, title: 'sem4', info: '📘 Semester 4\n📚 OS, Algorithms, DBMS\n⭐ GPA: Waiting...' }
+    ];
+
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+
+        const queen = queens.find(q => q.row === row && q.col === col);
+        if (queen) {
+          cell.innerHTML = `♛<div class="queen-label">${queen.title}</div>`;
+          cell.classList.add('queen');
+          cell.dataset.title = queen.title;
+          cell.onclick = () => {
+            infoBox.style.display = 'block';
+            infoBox.innerHTML = `<strong>${queen.title.toUpperCase()}</strong>\n${queen.info}`;
+            cell.classList.remove('notify');
+            infoBox.scrollIntoView({ behavior: 'smooth' });
+          };
+          cellMap[queen.title.toLowerCase()] = cell;
+        }
+
+        board.appendChild(cell);
+      }
+    }
+
+    // Terminal integration (shared logic)
+  </script>
+</body>
+</html>
