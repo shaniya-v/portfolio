@@ -1,5 +1,5 @@
 .leadership {
-  background: var(--bg-light);
+  background: transparent;
 }
 
 .leadership-grid {
@@ -9,12 +9,12 @@
 }
 
 .leadership-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-left: 4px solid var(--primary-color);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
@@ -62,7 +62,7 @@
 
 .leadership-title {
   font-size: 1.2rem;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -75,13 +75,13 @@
 }
 
 .leadership-period {
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   font-style: italic;
 }
 
 .leadership-description {
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.7;
   font-size: 0.95rem;
 }

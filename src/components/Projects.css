@@ -1,5 +1,5 @@
 .projects {
-  background: var(--bg-light);
+  background: transparent;
 }
 
 .projects-grid {
@@ -9,12 +9,11 @@
 }
 
 .project-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid transparent;
   position: relative;
   overflow: hidden;
 }
@@ -55,12 +54,12 @@
 
 .project-title {
   font-size: 1.5rem;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
 .project-description {
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.7;
   margin-bottom: 1.5rem;
 }
@@ -73,7 +72,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
 }

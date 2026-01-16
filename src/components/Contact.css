@@ -1,5 +1,5 @@
 .contact {
-  background: var(--bg-light);
+  background: transparent;
 }
 
 .contact-content {
@@ -17,10 +17,10 @@
 .contact-item {
   display: flex;
   gap: 1.5rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -36,7 +36,7 @@
 
 .contact-details h3 {
   font-size: 1.1rem;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 

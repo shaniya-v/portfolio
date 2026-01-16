@@ -2,18 +2,22 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: transparent;
 }
 
 main {
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .footer {
-  background: var(--text-dark);
+  background: transparent;
   color: white;
   text-align: center;
   padding: 2rem;
   margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .section {
@@ -26,7 +30,7 @@ main {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--text-dark);
+  color: #ffffff;
   position: relative;
   display: inline-block;
 }
@@ -44,7 +48,7 @@ main {
 
 .section-subtitle {
   font-size: 1.1rem;
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 3rem;
 }
 

@@ -20,8 +20,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--text-dark);
+  color: #ffffff;
   line-height: 1.6;
+  background: #000000;
 }
 
 html {

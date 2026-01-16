@@ -1,5 +1,5 @@
 .certifications {
-  background: var(--bg-white);
+  background: transparent;
 }
 
 .cert-achievements-container {
@@ -10,7 +10,7 @@
 
 .subsection-title {
   font-size: 1.8rem;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 1.5rem;
   font-weight: 700;
 }
@@ -19,10 +19,11 @@
 .achievement-item {
   display: flex;
   gap: 1rem;
-  background: var(--bg-light);
+  background: rgba(255, 255, 255, 0.05);
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -41,13 +42,13 @@
 .cert-details h4,
 .achievement-details h4 {
   font-size: 1.1rem;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 0.25rem;
 }
 
 .cert-details p,
 .achievement-details p {
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
 }
 

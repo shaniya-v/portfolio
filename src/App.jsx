@@ -8,11 +8,15 @@ import Skills from './components/Skills'
 import Leadership from './components/Leadership'
 import Certifications from './components/Certifications'
 import Contact from './components/Contact'
+import StarBackground from './components/StarBackground'
+import CursorEffect from './components/CursorEffect'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
+      <StarBackground />
+      <CursorEffect />
       <Header />
       <main>
         <Hero />
