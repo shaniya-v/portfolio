@@ -1,12 +1,5 @@
 .hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6rem 2rem 2rem;
-  background: transparent;
-  position: relative;
-  overflow: hidden;
+  display: none;
 }
 
 .intro-container {

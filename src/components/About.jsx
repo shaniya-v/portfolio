@@ -19,27 +19,6 @@ const About = () => {
             in software development, data analysis, and intelligent automation.
           </p>
         </div>
-        
-        <div className="about-education">
-          <h3>Education</h3>
-          <div className="education-item">
-            <div className="education-header">
-              <h4>B.E Computer Science and Engineering</h4>
-              <span className="year">2023-2027</span>
-            </div>
-            <p className="institution">Stella Mary's College of Engineering</p>
-            <p className="grade">CGPA: <strong>9.06</strong> (sem IV)</p>
-          </div>
-          
-          <div className="education-item">
-            <div className="education-header">
-              <h4>Higher Secondary</h4>
-              <span className="year">2023</span>
-            </div>
-            <p className="institution">St.Anthony's Higher Secondary School</p>
-            <p className="grade">Score: <strong>83%</strong></p>
-          </div>
-        </div>
       </div>
     </section>
   )

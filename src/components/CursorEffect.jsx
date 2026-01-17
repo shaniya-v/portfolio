@@ -9,7 +9,8 @@ const CursorEffect = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
-    let hueCounter = 0;
+    let lastX = null;
+    let lastY = null;
 
     // Set canvas size
     const resizeCanvas = () => {
@@ -19,16 +20,37 @@ const CursorEffect = () => {
 
     // Handle mouse move
     const handleMouseMove = (e) => {
-      hueCounter = (hueCounter + 3) % 360;
+      const currentX = e.clientX;
+      const currentY = e.clientY;
+
+      // Interpolate points for smooth continuous effect
+      if (lastX !== null && lastY !== null) {
+        const dx = currentX - lastX;
+        const dy = currentY - lastY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const steps = Math.max(1, Math.ceil(distance / 5));
+
+        for (let i = 0; i < steps; i++) {
+          const t = i / steps;
+          trail.current.push({
+            x: lastX + dx * t,
+            y: lastY + dy * t,
+            life: 1
+          });
+        }
+      }
+
       trail.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        hue: hueCounter,
+        x: currentX,
+        y: currentY,
         life: 1
       });
+
+      lastX = currentX;
+      lastY = currentY;
       
       // Keep trail length manageable
-      if (trail.current.length > 35) {
+      while (trail.current.length > 60) {
         trail.current.shift();
       }
     };
@@ -38,15 +60,35 @@ const CursorEffect = () => {
       e.preventDefault();
       if (e.touches.length > 0) {
         const touch = e.touches[0];
-        hueCounter = (hueCounter + 3) % 360;
+        const currentX = touch.clientX;
+        const currentY = touch.clientY;
+
+        if (lastX !== null && lastY !== null) {
+          const dx = currentX - lastX;
+          const dy = currentY - lastY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const steps = Math.max(1, Math.ceil(distance / 5));
+
+          for (let i = 0; i < steps; i++) {
+            const t = i / steps;
+            trail.current.push({
+              x: lastX + dx * t,
+              y: lastY + dy * t,
+              life: 1
+            });
+          }
+        }
+
         trail.current.push({
-          x: touch.clientX,
-          y: touch.clientY,
-          hue: hueCounter,
+          x: currentX,
+          y: currentY,
           life: 1
         });
+
+        lastX = currentX;
+        lastY = currentY;
         
-        if (trail.current.length > 35) {
+        while (trail.current.length > 60) {
           trail.current.shift();
         }
       }
@@ -54,43 +96,50 @@ const CursorEffect = () => {
 
     // Animate
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Faster fade to clear shadow trails in ~2 seconds
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw smooth trail
+      // Draw smooth shooting star trail with tapering tail
       if (trail.current.length > 1) {
-        for (let i = 0; i < trail.current.length; i++) {
-          const point = trail.current[i];
-          const nextPoint = trail.current[i + 1];
+        trail.current.forEach((point, i) => {
+          point.life -= 0.03;
           
-          // Fade trail naturally
-          point.life -= 0.028;
-          
-          if (point.life > 0 && nextPoint) {
-            ctx.save();
+          if (point.life > 0) {
+            // Progress from oldest (0) to newest (1)
+            const progress = i / trail.current.length;
             
-            // Draw flowing line segment with vibrant gradient
-            const size = 35 * point.life;
+            // Taper the tail - newest points are thicker, older points get thinner
+            const tailTaper = Math.pow(progress, 0.8);
+            const size = 12 * point.life * tailTaper;
+            
+            // Create smooth gradient glow
             const gradient = ctx.createRadialGradient(
               point.x, point.y, 0,
               point.x, point.y, size
             );
             
-            gradient.addColorStop(0, `hsla(${point.hue}, 100%, 65%, ${point.life * 0.9})`);
-            gradient.addColorStop(0.3, `hsla(${(point.hue + 40) % 360}, 100%, 60%, ${point.life * 0.8})`);
-            gradient.addColorStop(0.6, `hsla(${(point.hue + 80) % 360}, 100%, 65%, ${point.life * 0.6})`);
-            gradient.addColorStop(1, `hsla(${(point.hue + 120) % 360}, 100%, 70%, 0)`);
+            // Fade older trail points more
+            const alpha = point.life * tailTaper;
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 1})`);
+            gradient.addColorStop(0.2, `rgba(250, 255, 255, ${alpha * 0.9})`);
+            gradient.addColorStop(0.5, `rgba(240, 250, 255, ${alpha * 0.7})`);
+            gradient.addColorStop(0.8, `rgba(225, 240, 255, ${alpha * 0.4})`);
+            gradient.addColorStop(1, 'rgba(210, 230, 255, 0)');
             
-            ctx.filter = 'blur(15px)';
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            ctx.globalAlpha = 1.2;
+            ctx.filter = `blur(${15 + size * 0.3}px)`;
             ctx.fillStyle = gradient;
             ctx.beginPath();
             ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
             ctx.fill();
-            
             ctx.restore();
           }
-        }
+        });
         
-        // Remove dead trail points
+        // Remove dead points
         trail.current = trail.current.filter(p => p.life > 0);
       }
 
