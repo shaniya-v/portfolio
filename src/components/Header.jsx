@@ -115,7 +115,7 @@ const Header = () => {
       
       <div className="terminal-content-area">
         <div className="terminal-hero">
-          <img src="../Id.png" alt="Shaniya" className="terminal-profile-img" />
+          <img src="/Id.png" alt="Shaniya" className="terminal-profile-img" />
           <div className="terminal-hero-text">
             <h1 className="terminal-name">SHANIYA V</h1>
             <p className="terminal-description">

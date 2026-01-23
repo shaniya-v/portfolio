@@ -1,169 +1,111 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './CursorEffect.css';
 
 const CursorEffect = () => {
-  const canvasRef = useRef(null);
-  const trail = useRef([]);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [trail, setTrail] = useState([]);
+  const trailLength = 8;
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-    let lastX = null;
-    let lastY = null;
-
-    // Set canvas size
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    // Handle mouse move
     const handleMouseMove = (e) => {
-      const currentX = e.clientX;
-      const currentY = e.clientY;
-
-      // Interpolate points for smooth continuous effect
-      if (lastX !== null && lastY !== null) {
-        const dx = currentX - lastX;
-        const dy = currentY - lastY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const steps = Math.max(1, Math.ceil(distance / 5));
-
-        for (let i = 0; i < steps; i++) {
-          const t = i / steps;
-          trail.current.push({
-            x: lastX + dx * t,
-            y: lastY + dy * t,
-            life: 1
-          });
-        }
-      }
-
-      trail.current.push({
-        x: currentX,
-        y: currentY,
-        life: 1
+      const x = e.clientX;
+      const y = e.clientY;
+      
+      setCursorPos({ x, y });
+      
+      // Update trail
+      setTrail((prevTrail) => {
+        const newTrail = [{ x, y, id: Date.now() + Math.random() }, ...prevTrail];
+        return newTrail.slice(0, trailLength);
       });
-
-      lastX = currentX;
-      lastY = currentY;
-      
-      // Keep trail length manageable
-      while (trail.current.length > 60) {
-        trail.current.shift();
-      }
     };
 
-    // Handle touch move
-    const handleTouchMove = (e) => {
-      e.preventDefault();
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const currentX = touch.clientX;
-        const currentY = touch.clientY;
-
-        if (lastX !== null && lastY !== null) {
-          const dx = currentX - lastX;
-          const dy = currentY - lastY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const steps = Math.max(1, Math.ceil(distance / 5));
-
-          for (let i = 0; i < steps; i++) {
-            const t = i / steps;
-            trail.current.push({
-              x: lastX + dx * t,
-              y: lastY + dy * t,
-              life: 1
-            });
-          }
-        }
-
-        trail.current.push({
-          x: currentX,
-          y: currentY,
-          life: 1
-        });
-
-        lastX = currentX;
-        lastY = currentY;
-        
-        while (trail.current.length > 60) {
-          trail.current.shift();
-        }
-      }
-    };
-
-    // Animate
-    const animate = () => {
-      // Faster fade to clear shadow trails in ~2 seconds
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw smooth shooting star trail with tapering tail
-      if (trail.current.length > 1) {
-        trail.current.forEach((point, i) => {
-          point.life -= 0.03;
-          
-          if (point.life > 0) {
-            // Progress from oldest (0) to newest (1)
-            const progress = i / trail.current.length;
-            
-            // Taper the tail - newest points are thicker, older points get thinner
-            const tailTaper = Math.pow(progress, 0.8);
-            const size = 12 * point.life * tailTaper;
-            
-            // Create smooth gradient glow
-            const gradient = ctx.createRadialGradient(
-              point.x, point.y, 0,
-              point.x, point.y, size
-            );
-            
-            // Fade older trail points more
-            const alpha = point.life * tailTaper;
-            gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 1})`);
-            gradient.addColorStop(0.2, `rgba(250, 255, 255, ${alpha * 0.9})`);
-            gradient.addColorStop(0.5, `rgba(240, 250, 255, ${alpha * 0.7})`);
-            gradient.addColorStop(0.8, `rgba(225, 240, 255, ${alpha * 0.4})`);
-            gradient.addColorStop(1, 'rgba(210, 230, 255, 0)');
-            
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-            ctx.globalAlpha = 1.2;
-            ctx.filter = `blur(${15 + size * 0.3}px)`;
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-          }
-        });
-        
-        // Remove dead points
-        trail.current = trail.current.filter(p => p.life > 0);
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    // Initialize
-    resizeCanvas();
-    animate();
-
-    // Event listeners
-    window.addEventListener('resize', resizeCanvas);
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="cursor-effect" />;
+  // Generate smooth path through trail points
+  const generateSmoothPath = () => {
+    if (trail.length < 2) return '';
+    
+    let path = `M ${trail[0].x} ${trail[0].y}`;
+    
+    for (let i = 1; i < trail.length; i++) {
+      const xc = (trail[i].x + trail[i - 1].x) / 2;
+      const yc = (trail[i].y + trail[i - 1].y) / 2;
+      path += ` Q ${trail[i - 1].x} ${trail[i - 1].y} ${xc} ${yc}`;
+    }
+    
+    if (trail.length > 1) {
+      const last = trail[trail.length - 1];
+      path += ` L ${last.x} ${last.y}`;
+    }
+    
+    return path;
+  };
+
+  return (
+    <>
+      {/* Smooth tail trail */}
+      <svg className="cursor-trail-svg" width="100%" height="100%">
+        <defs>
+          <linearGradient id="trailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255, 255, 255, 0.9)" />
+            <stop offset="50%" stopColor="rgba(200, 230, 255, 0.5)" />
+            <stop offset="100%" stopColor="rgba(200, 230, 255, 0)" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        {trail.length > 1 && (
+          <path
+            d={generateSmoothPath()}
+            stroke="url(#trailGradient)"
+            strokeWidth="3"
+            fill="none"
+            strokeLinecap="round"
+            filter="url(#glow)"
+            opacity="0.8"
+          />
+        )}
+      </svg>
+
+      {/* Trail particles for extra glow */}
+      {trail.map((pos, index) => (
+        <div
+          key={pos.id}
+          className="cursor-trail-particle"
+          style={{
+            left: `${pos.x}px`,
+            top: `${pos.y}px`,
+            opacity: (1 - (index / trailLength)) * 0.6,
+            transform: `translate(-50%, -50%) scale(${1 - (index / trailLength) * 0.5})`,
+          }}
+        />
+      ))}
+      
+      {/* Main star cursor */}
+      <div
+        className="cursor-star"
+        style={{
+          left: `${cursorPos.x}px`,
+          top: `${cursorPos.y}px`
+        }}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="white" stroke="white" strokeWidth="0.5"/>
+        </svg>
+      </div>
+    </>
+  );
 };
 
 export default CursorEffect;
