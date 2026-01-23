@@ -53,3 +53,17 @@ body,
 body * {
   cursor: none !important;
 }
+
+/* Hide cursor effect on mobile and tablet devices */
+@media (max-width: 1024px), (pointer: coarse) {
+  .cursor-trail-svg,
+  .cursor-star,
+  .cursor-trail-particle {
+    display: none !important;
+  }
+  
+  body,
+  body * {
+    cursor: auto !important;
+  }
+}
