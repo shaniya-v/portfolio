@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import './Header.css'
 
 const Header = () => {
@@ -77,7 +78,12 @@ const Header = () => {
 
   return (
     <>
-      <header className="header terminal-header">
+      <motion.header
+        className="header terminal-header"
+        initial={{ opacity: 0, y: -24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         <div className="terminal-navbar">
           <div className="terminal-titlebar">
             <div className="terminal-buttons">
@@ -111,11 +117,17 @@ const Header = () => {
             <span></span>
           </button>
         </div>
-      </header>
+      </motion.header>
       
-      <div className="terminal-content-area">
+      <motion.div
+        className="terminal-content-area"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ delay: 0.2, duration: 0.9, ease: 'easeOut' }}
+      >
         <div className="terminal-hero">
-          <img src="/Id.png" alt="Shaniya" className="terminal-profile-img" />
+          <div className="terminal-profile-img-placeholder" id="header-profile-img-placeholder" />
           <div className="terminal-hero-text">
             <h1 className="terminal-name">SHANIYA V</h1>
             <p className="terminal-description">
@@ -133,7 +145,7 @@ const Header = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }

@@ -55,26 +55,66 @@
   color: white;
 }
 
-.hero-typing {
-  font-size: 3rem;
-  font-weight: 700;
+/* ── Typing block ─────────────────────────────────────── */
+.hero-typing-block {
   margin-bottom: 2rem;
-  color: #ffffff;
-  min-height: 4rem;
 }
 
-.cursor-blink {
-  animation: blink 1s step-end infinite;
-  color: #60a5fa;
+.ht-greeting {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+  margin: 0 0 0.35rem;
+  min-height: 2rem;
+  font-family: 'Inter', sans-serif;
 }
 
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
+.ht-name {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(3.2rem, 7vw, 6rem);
+  font-weight: normal;
+  letter-spacing: 0.12em;
+  color: #00bfff;
+  text-shadow:
+    0 0 10px #00bfff,
+    0 0 28px rgba(0,191,255,0.55),
+    0 0 60px rgba(0,191,255,0.22);
+  line-height: 1.05;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.ht-char {
+  display: inline-block;
+}
+
+.ht-space {
+  display: inline-block;
+  width: 0.35em;
+}
+
+/* Cursor — blinks while typing, idles after */
+.ht-cursor {
+  display: inline-block;
+  color: #00bfff;
+  font-size: 0.85em;
+  margin-left: 0.06em;
+  animation: ht-blink 0.75s step-end infinite;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.ht-cursor-idle {
+  animation: ht-blink 1.1s step-end infinite;
+  opacity: 0.6;
+}
+
+@keyframes ht-blink {
+  0%,50%  { opacity: 1; }
+  51%,100%{ opacity: 0; }
 }
 
 .hero-description-box {

@@ -1,0 +1,476 @@
+/* ═══════════════════════════════════════════════════════════
+   Education — Scroll-locked horizontal journey
+   
+   WHY 400vh outer + sticky inner:
+     position:sticky ONLY works when the parent is TALLER than
+     the sticky child. A 100vh parent = same height as sticky →
+     sticky has no effect. 400vh gives 300vh of "pinning room."
+     
+   WHY listener on sticky div, not window:
+     Avoids global rect checks and timing races. The sticky div
+     fills 100vh; when the user's cursor is over it and they
+     scroll, the wheel event fires directly on this element.
+   ═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* ── Outer scroll canvas ────────────────────────────────────
+   Must NOT have overflow:hidden (breaks position:sticky).
+   400vh = 300vh of pinning time after section enters view.    */
+.edc-outer {
+  position: relative;
+  height: 400vh;
+  /* NO overflow property here — sticky would break */
+}
+
+/* ── Sticky panel ───────────────────────────────────────────
+   Pins to viewport top while edc-outer scrolls behind it.
+   overflow:hidden clips the wide track.                       */
+.edc-sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;            /* clips the horizontally-moving track */
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* cursor tells user this panel responds to scroll */
+  cursor: ew-resize;
+}
+
+/* ── Heading ─────────────────────────────────────────────── */
+.edc-head {
+  flex-shrink: 0;
+  padding: 2rem 5rem 0.6rem;
+}
+
+.edc-title {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+  font-weight: normal;
+  color: #00bfff;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow:
+    0 0 10px #00bfff,
+    0 0 28px rgba(0, 191, 255, 0.55),
+    0 0 55px rgba(0, 191, 255, 0.2);
+}
+
+.edc-subtitle {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: rgba(0, 191, 255, 0.48);
+  letter-spacing: 0.1em;
+  margin: 0.3rem 0 0;
+}
+
+/* ── Clip area ──────────────────────────────────────────────
+   flex:1 fills remaining height. overflow:hidden clips track. */
+.edc-viewport {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 0;      /* required for flex children to shrink */
+  position: relative;
+}
+
+/* ── Moving track ───────────────────────────────────────────
+   flex-column: cards-row sits above road-row.
+   min-width: max-content prevents wrapping.                   */
+.edc-track {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 8vw 10px;
+  min-width: max-content;
+  will-change: transform;
+}
+
+/* ── Cards row ──────────────────────────────────────────────
+   All cards at identical baseline — perfectly straight.       */
+.edc-cards-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;    /* same height for every card */
+  gap: 44px;
+}
+
+/* ── Road row ───────────────────────────────────────────────
+   Horizontal line + one node per card.
+   Each .edc-node is same width as .edc-card so nodes are
+   centered exactly below their card.                          */
+.edc-road-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 44px;
+  position: relative;
+  height: 54px;
+}
+
+.edc-road-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 191, 255, 0.08) 2%,
+    rgba(0, 191, 255, 0.35) 12%,
+    rgba(0, 191, 255, 0.35) 88%,
+    rgba(0, 191, 255, 0.08) 98%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Node dot ───────────────────────────────────────────────
+   Width must match .edc-card width so it centers correctly.   */
+.edc-node {
+  width: 270px;            /* keep in sync with .edc-card width */
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.edc-node-core {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent, #00bfff);
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  box-shadow:
+    0 0 0 3px rgba(0, 0, 0, 0.5),
+    0 0 12px var(--accent, #00bfff),
+    0 0 26px var(--accent, rgba(0, 191, 255, 0.35));
+}
+
+.edc-node-idx {
+  font-family: 'VT323', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--accent, #00bfff);
+  opacity: 0.65;
+  line-height: 1;
+}
+
+/* ── Card ───────────────────────────────────────────────── */
+.edc-card {
+  width: 270px;
+  padding: 1.5rem 1.35rem 1.25rem;
+  border-radius: 18px;
+  background: rgba(6, 12, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.03),
+    0 18px 52px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  will-change: transform;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.edc-card:hover {
+  border-color: rgba(0, 191, 255, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.07),
+    0 26px 68px rgba(0, 0, 0, 0.6),
+    0 0 32px rgba(0, 191, 255, 0.1);
+}
+
+.edc-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent, #00bfff), transparent);
+  opacity: 0.7;
+  border-radius: 0 0 3px 3px;
+}
+
+.edc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    100px circle at 0 0,
+    rgba(0, 191, 255, 0.06) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.edc-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.edc-icon {
+  font-size: 1.45rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.edc-label {
+  font-size: 0.63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent, #00bfff);
+  margin: 0;
+  display: block;
+}
+
+.edc-year {
+  font-size: 0.67rem;
+  color: rgba(255, 255, 255, 0.28);
+  margin: 0.1rem 0 0;
+  display: block;
+}
+
+.edc-school {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.42;
+  margin: 0 0 0.32rem;
+}
+
+.edc-location {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.32);
+  margin: 0 0 0.85rem;
+}
+
+.edc-score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
+.edc-score-val {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.95rem;
+  line-height: 1;
+  color: var(--accent, #00bfff);
+  text-shadow: 0 0 14px var(--accent, rgba(0, 191, 255, 0.5));
+}
+
+.edc-score-lbl {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.edc-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.46);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.edc-dot-small {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent, #00bfff);
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+/* ── Hint ────────────────────────────────────────────────── */
+.edc-hint {
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem;
+  color: rgba(0, 191, 255, 0.38);
+  letter-spacing: 0.12em;
+  padding-bottom: 0.7rem;
+  margin: 0;
+  animation: edc-float 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes edc-float {
+  0%, 100% { opacity: 0.38; transform: translateY(0); }
+  50%       { opacity: 0.7;  transform: translateY(-3px); }
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .edc-outer   { height: auto; }
+  .edc-sticky  {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    background: transparent;
+    backdrop-filter: none;
+    cursor: default;
+  }
+  .edc-viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .edc-viewport::-webkit-scrollbar { display: none; }
+  .edc-track { transform: none !important; padding: 0 1.5rem; gap: 14px; }
+  .edc-cards-row, .edc-road-row { gap: 28px; }
+  .edc-card,  .edc-node { width: 230px; }
+  .edc-head      { padding: 1.5rem 1.5rem 0.5rem; }
+  .edc-prog-wrap { padding: 0.5rem 1.5rem 1rem; }
+}
+
+@media (max-width: 480px) {
+  .edc-card, .edc-node { width: 200px; }
+  .edc-cards-row, .edc-road-row { gap: 20px; }
+}
+
+/* ── Transcript thumbnail ─────────────────────────────────── */
+.edc-transcript-thumb {
+  position: relative;
+  margin-top: 0.85rem;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.edc-transcript-thumb:hover {
+  border-color: rgba(0, 191, 255, 0.4);
+  box-shadow: 0 0 18px rgba(0, 191, 255, 0.15);
+}
+
+.edc-transcript-img {
+  display: block;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.3s ease;
+}
+
+.edc-transcript-thumb:hover .edc-transcript-img {
+  transform: scale(1.04);
+}
+
+.edc-transcript-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.edc-transcript-thumb:hover .edc-transcript-overlay {
+  opacity: 1;
+}
+
+.edc-transcript-zoom {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #00bfff;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(0, 191, 255, 0.5);
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* ── Lightbox ────────────────────────────────────────────── */
+.edc-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.edc-lightbox-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: min(92vw, 860px);
+  width: 100%;
+}
+
+.edc-lightbox-label {
+  font-family: 'VT323', monospace;
+  font-size: 1.2rem;
+  color: #00bfff;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-align: center;
+}
+
+.edc-lightbox-img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 191, 255, 0.25);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+.edc-lightbox-close {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.edc-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.45);
+}

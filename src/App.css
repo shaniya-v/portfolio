@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: column;
   background: transparent;
-  overflow-x: hidden;
+  /* overflow-x removed — it breaks position:sticky in Education.
+     overflow-x:hidden is set on html and body in index.css instead. */
   width: 100%;
 }
 
@@ -12,7 +13,9 @@ main {
   position: relative;
   z-index: 1;
   width: 100%;
-  overflow-x: hidden;
+  /* overflow-x must NOT be hidden here — it breaks position:sticky in children.
+     overflow-x is controlled at the .App and html/body level instead. */
+  overflow: visible;
 }
 
 .footer {
@@ -30,38 +33,17 @@ main {
   margin: 0 auto;
 }
 
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #ffffff;
-  position: relative;
-  display: inline-block;
-}
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: var(--primary-color);
-  border-radius: 2px;
-}
-
+/* Legacy subtitle fallback — individual sections override as needed */
 .section-subtitle {
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 3rem;
 }
 
+
 @media (max-width: 768px) {
   .section {
     padding: 3rem 1.5rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
   }
 }

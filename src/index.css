@@ -23,14 +23,12 @@ body {
   color: #ffffff;
   line-height: 1.6;
   background: #000000;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: clip;   /* clip prevents horizontal scroll WITHOUT creating a block formatting context that breaks position:sticky */
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 }
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: clip;   /* same — clip instead of hidden so sticky children work */
 }

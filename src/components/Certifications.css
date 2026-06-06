@@ -1,60 +1,260 @@
-.certifications {
+/* ── Section Wrapper ── */
+.cert-section {
   background: transparent;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 4rem 5rem 6rem !important;
+  margin: 0 auto !important;
+  box-sizing: border-box;
+  position: relative; /* needed for floating image context */
 }
 
-.cert-achievements-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+/* ── Section Header ── */
+.cert-section-header {
+  margin-bottom: 3rem;
 }
 
-.subsection-title {
-  font-size: 1.8rem;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
+.cert-section-title {
+  display: inline-block;
+  color: #00bfff;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+  font-weight: normal;
+  text-shadow:
+    0 0 8px rgba(0, 191, 255, 0.8),
+    0 0 18px rgba(0, 191, 255, 0.45),
+    0 0 28px rgba(0, 191, 255, 0.2);
+  padding: 0.2rem 0;
+  line-height: 1;
 }
 
-.cert-item,
-.achievement-item {
-  display: flex;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.cert-item:hover,
-.achievement-item:hover {
-  transform: translateX(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.cert-icon,
-.achievement-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
-.cert-details h4,
-.achievement-details h4 {
+.cert-section-subtitle {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 700px;
   font-size: 1.1rem;
-  color: #ffffff;
-  margin-bottom: 0.25rem;
 }
 
-.cert-details p,
-.achievement-details p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
+/* ── Items List ── */
+.cert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Reserve right side for the floating image */
+  padding-right: 38%;
+}
+
+/* ── Each Row ── */
+.cert-row {
+  cursor: default;
+  transition: opacity 0.25s ease;
+}
+
+.cert-row-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.4rem 0;
+}
+
+/* Dimmed siblings when another is hovered */
+.cert-row-dimmed .cert-title {
+  color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.cert-row-dimmed .cert-num,
+.cert-row-dimmed .cert-issuer,
+.cert-row-dimmed .cert-type,
+.cert-row-dimmed .cert-dot-sep {
+  opacity: 0.2;
+}
+
+/* ── Number ── */
+.cert-num {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1;
+  padding-top: 0.9rem;   /* visual align with title */
+  white-space: nowrap;
+  min-width: 2.2rem;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.cert-row-hovered .cert-num {
+  color: #00bfff;
+  opacity: 1;
+}
+
+/* ── Row Body ── */
+.cert-row-body {
+  flex: 1;
+}
+
+.cert-title-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: nowrap;
+}
+
+/* ── Big Title ── */
+.cert-title {
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+  margin: 0;
+}
+
+.cert-row-hovered .cert-title {
+  color: #00bfff !important;
+  text-shadow: 0 0 30px rgba(0, 191, 255, 0.35);
+}
+
+/* ── Arrow icon ── */
+.cert-arrow {
+  font-size: 1.1rem;
+  color: #00bfff;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(0, 191, 255, 0.5));
+}
+
+/* ── Meta tags below title ── */
+.cert-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+  transition: opacity 0.25s ease;
+}
+
+.cert-type {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+  transition: color 0.25s ease;
+}
+
+.cert-row-hovered .cert-type {
+  color: rgba(0, 191, 255, 0.7);
+}
+
+.cert-dot-sep {
+  font-size: 0.35rem;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1;
+  transition: opacity 0.25s ease;
+}
+
+.cert-issuer {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  transition: color 0.25s ease;
+}
+
+.cert-row-hovered .cert-issuer {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── Horizontal Divider ── */
+.cert-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  width: 100%;
+  transition: background 0.25s ease;
+}
+
+.cert-row-hovered + li .cert-divider,
+.cert-row:has(+ .cert-row-hovered) .cert-divider {
+  background: rgba(0, 191, 255, 0.15);
+}
+
+/* ── Floating Image Panel (right side, follows cursor Y) ── */
+.cert-float-img {
+  position: fixed;
+  right: 5rem;
+  top: 0;            /* overridden by motion style.y */
+  width: clamp(240px, 28vw, 380px);
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 191, 255, 0.12),
+    0 0 40px rgba(0, 191, 255, 0.06);
+  transform-origin: center right;
+}
+
+.cert-float-img-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cert-float-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(5, 10, 20, 0.85) 0%,
+    rgba(5, 10, 20, 0.2) 50%,
+    transparent 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem 1.2rem;
+}
+
+.cert-float-type {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #00bfff;
+  text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .cert-list {
+    padding-right: 0;
+  }
+
+  .cert-float-img {
+    display: none; /* hide on tablet/mobile — no hover to speak of */
+  }
+
+  .cert-title {
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+  }
 }
 
 @media (max-width: 768px) {
-  .cert-achievements-container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .cert-section {
+    padding: 3rem 2rem 4rem !important;
+  }
+
+  .cert-row-inner {
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .cert-num {
+    font-size: 0.9rem;
+    min-width: 1.8rem;
   }
 }

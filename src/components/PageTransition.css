@@ -1,0 +1,95 @@
+/* ── Page Transition Overlay ─────────────────────────────── */
+.pt-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Back panel — deep dark */
+.pt-panel {
+  position: absolute;
+  inset: 0;
+}
+
+.pt-panel-back {
+  background: #000000;
+  z-index: 1;
+}
+
+/* Front panel — vivid cyan-dark gradient  */
+.pt-panel-front {
+  background: linear-gradient(160deg, #020d1a 0%, #001e38 45%, #003050 100%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Centre content ── */
+.pt-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* Typing name row — text + cursor side by side */
+.pt-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+
+.pt-logo-text {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: normal;
+  letter-spacing: 0.18em;
+  color: #00bfff;
+  text-shadow:
+    0 0 12px #00bfff,
+    0 0 36px rgba(0, 191, 255, 0.6),
+    0 0 70px rgba(0, 191, 255, 0.25);
+  line-height: 1;
+  text-transform: uppercase;
+  /* min-width keeps the row height stable before any chars appear */
+  min-height: 1.1em;
+}
+
+/* Blinking cursor — matches name font so it sits at the right height */
+.pt-cursor {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: normal;
+  color: #00bfff;
+  text-shadow: 0 0 14px #00bfff;
+  line-height: 1;
+  margin-left: 0.04em;
+  transition: opacity 0.05s step-end;
+  user-select: none;
+}
+
+/* Subtitle line below bar */
+.pt-subtitles {
+  margin-top: 0.3rem;
+}
+
+.pt-sub-line {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.65rem, 1.5vw, 0.9rem);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(0, 191, 255, 0.5);
+}
+
+/* Animated accent bar */
+.pt-bar {
+  width: clamp(120px, 25vw, 260px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00bfff, transparent);
+  transform-origin: left center;
+  box-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+}

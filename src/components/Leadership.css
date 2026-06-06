@@ -1,118 +1,339 @@
-.leadership {
+.leadership-section {
   background: transparent;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 4rem 5rem 2rem !important;
+  margin: 0 auto !important;
+  box-sizing: border-box;
 }
 
-.leadership-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+.leadership-section-header {
+  margin-bottom: 3.5rem;
+  padding-left: 0;
+  text-align: left;
 }
 
-.leadership-card {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: 4px solid var(--primary-color);
-  transition: all 0.3s ease;
+.leadership-section-title {
+  display: inline-block;
+  color: #00bfff;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+  font-weight: normal;
+  text-shadow:
+    0 0 8px rgba(0, 191, 255, 0.8),
+    0 0 18px rgba(0, 191, 255, 0.45),
+    0 0 28px rgba(0, 191, 255, 0.2);
+  padding: 0.2rem 0;
+  line-height: 1;
+}
+
+.leadership-section-subtitle {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 700px;
+  font-size: 1.1rem;
+}
+
+/* ── Timeline Container ── */
+.leadership-timeline-container {
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  max-width: 1100px;
+  margin: 4rem auto 0;
+  padding: 2rem 0;
 }
 
-.leadership-card::after {
-  content: '';
+/* Centered Timeline Track (desktop only) */
+.leadership-timeline-track {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 1;
+}
+
+.leadership-timeline-line-bg {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
-  background: var(--primary-color);
-  opacity: 0.05;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.leadership-timeline-line-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, #00bfff, #00e5ff);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
+  border-radius: 2px;
+}
+
+/* Glowing Pulsing Travel Dot */
+.leadership-timeline-dot {
+  position: absolute;
+  left: 50%;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  transform: translate(30%, -30%);
-  transition: all 0.3s ease;
+  background: #00bfff;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.8);
 }
 
-.leadership-card:hover::after {
-  transform: translate(20%, -20%) scale(1.5);
+.leadership-timeline-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 191, 255, 0.3);
+  transform: translate(-50%, -50%);
+  animation: auraPulse 2s infinite ease-in-out;
+  pointer-events: none;
 }
 
-.leadership-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-left-width: 6px;
+@keyframes auraPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0.9;
+    box-shadow: 
+      0 0 25px rgba(0, 191, 255, 0.7),
+      0 0 50px rgba(0, 191, 255, 0.4);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+  }
 }
 
-.leadership-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: inline-block;
-  filter: grayscale(0.3);
-  transition: all 0.3s ease;
+/* Timeline Rows & Columns */
+.leadership-timeline-list {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
 }
 
-.leadership-card:hover .leadership-icon {
-  filter: grayscale(0);
-  transform: scale(1.1) rotate(5deg);
+.leadership-timeline-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 7rem;
+  width: 100%;
 }
 
-.leadership-header {
-  margin-bottom: 1rem;
+.leadership-timeline-box:last-child {
+  margin-bottom: 2rem;
 }
 
-.leadership-title {
-  font-size: 1.2rem;
-  color: #ffffff;
+/* Left Column: Role Details & Year */
+.leadership-timeline-in {
+  width: 42%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.leadership-timeline-role {
+  flex: 1;
+}
+
+.leadership-role-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   margin-bottom: 0.5rem;
+}
+
+.leadership-icon-badge {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 191, 255, 0.15);
+  border: 1px solid rgba(0, 191, 255, 0.3);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.1);
+}
+
+.leadership-role-title {
+  font-size: 1.25rem;
+  color: #ffffff;
   font-weight: 700;
+  line-height: 1.3;
 }
 
-.leadership-org {
-  color: var(--primary-color);
-  font-weight: 600;
+.leadership-role-org {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
   font-size: 0.95rem;
-  margin-bottom: 0.25rem;
+  margin-left: 3.3rem;
+  font-family: monospace;
 }
 
-.leadership-period {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  font-style: italic;
+.leadership-timeline-year {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 2.5rem;
+  color: #00bfff;
+  font-weight: normal;
+  text-shadow: 
+    0 0 8px rgba(0, 191, 255, 0.8),
+    0 0 18px rgba(0, 191, 255, 0.3);
+  line-height: 1;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 0.3rem;
 }
 
-.leadership-description {
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  font-size: 0.95rem;
+/* Right Column: Description & Badges */
+.leadership-timeline-desc {
+  width: 42%;
+  text-align: left;
+  padding-top: 0.5rem;
 }
 
-.leadership-achievements {
-  margin-top: 1rem;
+.leadership-desc-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+
+.leadership-timeline-achievements {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
-.achievement-badge {
-  background: linear-gradient(135deg, #f0f4ff, #e6edff);
-  color: var(--primary-color);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+.leadership-achievement-badge {
+  background: rgba(0, 191, 255, 0.06);
+  color: #00bfff;
+  border: 1px solid rgba(0, 191, 255, 0.25);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid var(--primary-color);
+  font-family: monospace;
+  text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
   transition: all 0.2s ease;
 }
 
-.achievement-badge:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+.leadership-achievement-badge:hover {
+  background: rgba(0, 191, 255, 0.15);
+  border-color: rgba(0, 191, 255, 0.5);
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.2);
 }
 
-@media (max-width: 768px) {
-  .leadership-grid {
-    grid-template-columns: 1fr;
+/* ── Golden Retro Award Highlights ── */
+.leadership-award-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 215, 0, 0.06);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  margin-top: 1rem;
+  margin-left: 3.3rem;
+  max-width: fit-content;
+  box-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.05),
+    inset 0 0 5px rgba(255, 215, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.leadership-award-box:hover {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 
+    0 0 15px rgba(255, 215, 0, 0.15),
+    inset 0 0 8px rgba(255, 215, 0, 0.1);
+}
+
+.award-trophy {
+  font-size: 1.1rem;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6));
+}
+
+.award-text {
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.25rem;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  letter-spacing: 0.02em;
+}
+
+/* ── Responsive Mobile Collapse ── */
+@media (max-width: 900px) {
+  .leadership-section {
+    padding: 3rem 2rem 2rem !important;
+  }
+
+  .leadership-timeline-container {
+    padding-left: 2rem;
+  }
+
+  .leadership-timeline-track {
+    left: 0;
+    transform: none;
+    width: 3px;
+  }
+
+  .leadership-timeline-dot {
+    left: 0;
+  }
+
+  .leadership-timeline-box {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 4rem;
+    width: 100%;
+  }
+
+  .leadership-timeline-in {
+    width: 100%;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .leadership-role-org {
+    margin-left: 0;
+  }
+
+  .leadership-award-box {
+    margin-left: 0;
+  }
+
+  .leadership-timeline-year {
+    margin-top: 0;
+    font-size: 2.2rem;
+  }
+
+  .leadership-timeline-desc {
+    width: 100%;
+    padding-top: 0;
   }
 }
